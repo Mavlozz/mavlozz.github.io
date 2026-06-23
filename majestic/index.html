@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MAVLO × Majestic Roleplay — Играй в GTA 5 RP</title>
+  <meta name="description" content="Станьте кем угодно в GTA 5. Majestic Roleplay — сервер, на котором стримит MAVLO. Промокод MAVLO для бонусов.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,600;0,700;0,800;0,900;1,800;1,900&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="../css/majestic.css">
+</head>
+<body>
+
+  <div class="page">
+
+    <!-- LEFT COLUMN -->
+    <div class="left-col">
+
+      <h1 class="brand">MAVLO</h1>
+
+      <div class="tagblock">
+        <p class="headline">СТАНЬТЕ КЕМ УГОДНО В GTA 5</p>
+        <p class="pink-tag">MAJESTIC ROLEPLAY</p>
+      </div>
+
+      <div class="desc">
+        <p>Привет от Mavlo! Приглашаю на незабываемый круиз по миру тусовок, тачек и больших возможностей. Проживи целую жизнь в мире GTA!</p>
+        <p>Уникальный мод с частыми обновлениями, дружелюбная экономика и реальная возможность заработать на крутую тачку без напряга. Залетай и стань тем, кем хочешь!</p>
+      </div>
+
+      <div class="bonuses">
+        <div class="bonus">
+          <span class="bonus-icon"><i class="fas fa-crown"></i></span>
+          <div class="bonus-text">
+            <span class="bonus-name">Majestic Premium</span>
+            <span class="bonus-sub">на 7 дней</span>
+          </div>
+        </div>
+        <div class="bonus">
+          <span class="bonus-icon bonus-icon-green"><i class="fas fa-dollar-sign"></i></span>
+          <div class="bonus-text">
+            <span class="bonus-name">50 000</span>
+            <span class="bonus-sub">игровой валюты</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- TODO: замени ссылку на реальную страницу регистрации/входа на сервер -->
+      <a href="https://majestic-rp.ru/?ref=MAVLO" target="_blank" rel="noopener" class="play-btn">
+        <i class="fas fa-play"></i>
+        НАЧАТЬ ИГРАТЬ
+      </a>
+
+      <div class="promo-wrap">
+        <span class="promo-label">Промокод:</span>
+        <div class="promo-box">
+          <span class="promo-code" id="promoCode">MAVLO</span>
+          <button class="promo-copy" id="copyBtn" onclick="copyPromo()" title="Скопировать">
+            <i class="far fa-copy"></i>
+          </button>
+        </div>
+      </div>
+
+      <div class="socials">
+        <!-- TODO: замени ссылки на свои -->
+        <a href="https://discord.gg/YOURSERVER" target="_blank" rel="noopener" aria-label="Discord"><i class="fab fa-discord"></i></a>
+        <a href="https://vk.com/YOURCHANNEL" target="_blank" rel="noopener" aria-label="VK"><i class="fab fa-vk"></i></a>
+        <a href="https://youtube.com/@YOURCHANNELNAME" target="_blank" rel="noopener" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+        <a href="https://t.me/YOURCHANNEL" target="_blank" rel="noopener" aria-label="Telegram"><i class="fab fa-telegram"></i></a>
+      </div>
+
+    </div>
+
+    <!-- RIGHT COLUMN — CHARACTER -->
+    <div class="right-col">
+      <div class="char-circle">
+        <div class="dots-pattern" id="dots"></div>
+        <!--
+          TODO: замени на реальный арт персонажа
+          Размер: желательно PNG с прозрачным фоном, минимум 800×900px
+          <img src="character.png" alt="MAVLO Character" class="char-img">
+        -->
+        <div class="char-placeholder">
+          <span>Сюда вставь<br>арт персонажа<br>(PNG без фона)</span>
+        </div>
+      </div>
+      <div class="sparkle sparkle-1"></div>
+      <div class="sparkle sparkle-2"></div>
+    </div>
+
+  </div>
+
+  <script>
+    function copyPromo() {
+      const code = document.getElementById('promoCode').textContent;
+      navigator.clipboard.writeText(code).then(() => {
+        const btn = document.getElementById('copyBtn');
+        btn.innerHTML = '<i class="fas fa-check"></i>';
+        btn.classList.add('copied');
+        setTimeout(() => {
+          btn.innerHTML = '<i class="far fa-copy"></i>';
+          btn.classList.remove('copied');
+        }, 2000);
+      });
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,367 @@
+/* ============================================================
+   MAJESTIC — GTA RP Promo Page
+   ============================================================ */
+
+:root {
+  --bg: #0a0a0d;
+  --bg2: #111118;
+  --pink: #e8185d;
+  --pink-glow: rgba(232, 24, 93, 0.45);
+  --pink-light: #ff3878;
+  --text: #ffffff;
+  --muted: #9090b0;
+  --dim: #555570;
+  --border: rgba(255,255,255,0.08);
+  --gold: #f59e0b;
+  --green: #22c55e;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { height: 100%; }
+
+body {
+  font-family: 'Inter', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  overflow: hidden;
+}
+
+@media (max-width: 900px) { body { overflow: auto; } }
+
+/* ============================================================
+   PAGE LAYOUT — two columns
+   ============================================================ */
+.page {
+  display: flex;
+  min-height: 100vh;
+  position: relative;
+}
+
+/* dark textured background */
+.page::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 60% 80% at 15% 50%, rgba(10,10,20,0.0) 0%, var(--bg) 100%),
+    /* subtle noise texture via repeating gradient */
+    repeating-linear-gradient(
+      45deg,
+      transparent 0px, transparent 40px,
+      rgba(255,255,255,0.008) 40px, rgba(255,255,255,0.008) 41px
+    );
+  pointer-events: none;
+}
+
+/* ============================================================
+   LEFT COLUMN
+   ============================================================ */
+.left-col {
+  position: relative;
+  z-index: 2;
+  flex: 0 0 55%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 60px 56px 60px 72px;
+  gap: 0;
+}
+
+/* Brand name */
+.brand {
+  font-family: 'Montserrat', sans-serif;
+  font-style: italic;
+  font-weight: 900;
+  font-size: clamp(52px, 6vw, 86px);
+  letter-spacing: -2px;
+  color: #fff;
+  line-height: 1;
+  margin-bottom: 20px;
+  text-shadow: 0 2px 40px rgba(255,255,255,0.08);
+}
+
+/* Tagblock */
+.tagblock { margin-bottom: 24px; }
+
+.headline {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 800;
+  font-size: clamp(16px, 2vw, 22px);
+  letter-spacing: 0.5px;
+  color: #fff;
+  margin-bottom: 4px;
+}
+
+.pink-tag {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 700;
+  font-size: clamp(14px, 1.6vw, 18px);
+  color: var(--pink);
+  letter-spacing: 1px;
+}
+
+/* Description */
+.desc {
+  margin-bottom: 28px;
+  max-width: 560px;
+}
+
+.desc p {
+  font-size: clamp(13px, 1.2vw, 15px);
+  color: var(--muted);
+  line-height: 1.7;
+  margin-bottom: 12px;
+}
+
+.desc p:last-child { margin-bottom: 0; }
+
+/* Bonuses */
+.bonuses {
+  display: flex;
+  gap: 32px;
+  margin-bottom: 32px;
+}
+
+.bonus {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.bonus-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: rgba(245, 158, 11, 0.15);
+  border: 1px solid rgba(245,158,11,0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  color: var(--gold);
+  flex-shrink: 0;
+}
+
+.bonus-icon-green {
+  background: rgba(34, 197, 94, 0.15);
+  border-color: rgba(34,197,94,0.3);
+  color: var(--green);
+}
+
+.bonus-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.bonus-name {
+  font-size: 14px;
+  font-weight: 600;
+  color: #fff;
+  line-height: 1.2;
+}
+
+.bonus-sub {
+  font-size: 12px;
+  color: var(--muted);
+}
+
+/* Play button */
+.play-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  background: var(--pink);
+  color: #fff;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 800;
+  font-size: clamp(14px, 1.4vw, 17px);
+  letter-spacing: 1px;
+  padding: 18px 36px;
+  border-radius: 8px;
+  width: fit-content;
+  box-shadow: 0 4px 32px var(--pink-glow), inset 0 1px 0 rgba(255,255,255,0.15);
+  transition: background 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+  margin-bottom: 20px;
+}
+
+.play-btn i { font-size: 12px; }
+
+.play-btn:hover {
+  background: var(--pink-light);
+  box-shadow: 0 4px 48px rgba(232, 24, 93, 0.65);
+  transform: translateY(-2px);
+}
+
+.play-btn:active { transform: translateY(0); }
+
+/* Promo code */
+.promo-wrap {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 32px;
+}
+
+.promo-label {
+  font-size: 13px;
+  color: var(--muted);
+  white-space: nowrap;
+}
+
+.promo-box {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  overflow: hidden;
+  height: 40px;
+}
+
+.promo-code {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 700;
+  font-size: 15px;
+  letter-spacing: 2px;
+  color: #fff;
+  padding: 0 14px;
+}
+
+.promo-copy {
+  background: none;
+  border: none;
+  border-left: 1px solid var(--border);
+  color: var(--muted);
+  cursor: pointer;
+  padding: 0 12px;
+  height: 100%;
+  font-size: 14px;
+  transition: color 0.2s, background 0.2s;
+}
+
+.promo-copy:hover { color: #fff; background: rgba(255,255,255,0.06); }
+.promo-copy.copied { color: var(--green); }
+
+/* Social links */
+.socials {
+  display: flex;
+  gap: 20px;
+}
+
+.socials a {
+  color: var(--dim);
+  font-size: 20px;
+  transition: color 0.2s ease, transform 0.2s ease;
+}
+
+.socials a:hover { color: var(--pink); transform: translateY(-2px); }
+
+/* ============================================================
+   RIGHT COLUMN — character
+   ============================================================ */
+.right-col {
+  position: relative;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Big pink circle */
+.char-circle {
+  position: relative;
+  width: clamp(340px, 42vw, 580px);
+  height: clamp(340px, 42vw, 580px);
+  border-radius: 50%;
+  background: var(--pink);
+  box-shadow:
+    0 0 80px var(--pink-glow),
+    0 0 160px rgba(232, 24, 93, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+/* Dots pattern */
+.dots-pattern {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background-image: radial-gradient(circle, rgba(255,255,255,0.25) 1.5px, transparent 1.5px);
+  background-size: 28px 28px;
+  pointer-events: none;
+}
+
+/* Character image */
+.char-img {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  height: 110%;
+  width: auto;
+  object-fit: contain;
+  z-index: 2;
+  filter: drop-shadow(0 0 30px rgba(0,0,0,0.6));
+}
+
+/* Placeholder */
+.char-placeholder {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  font-size: 15px;
+  font-weight: 600;
+  color: rgba(255,255,255,0.4);
+  line-height: 1.6;
+  padding: 24px;
+  user-select: none;
+}
+
+/* Sparkle diamonds */
+.sparkle {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  background: rgba(255,255,255,0.3);
+  clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+}
+
+.sparkle-1 { bottom: 18%; right: 12%; opacity: 0.6; animation: pulse-sparkle 3s ease-in-out infinite; }
+.sparkle-2 { bottom: 30%; right: 6%; width: 12px; height: 12px; opacity: 0.35; animation: pulse-sparkle 3s ease-in-out 1.5s infinite; }
+
+@keyframes pulse-sparkle {
+  0%, 100% { opacity: 0.3; transform: scale(1); }
+  50% { opacity: 0.7; transform: scale(1.2); }
+}
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+@media (max-width: 1100px) {
+  .left-col { padding: 48px 40px; }
+}
+
+@media (max-width: 900px) {
+  body { overflow: auto; }
+  .page { flex-direction: column-reverse; min-height: auto; }
+
+  .right-col {
+    padding: 48px 24px 0;
+  }
+
+  .char-circle {
+    width: 260px;
+    height: 260px;
+  }
+
+  .left-col {
+    padding: 40px 24px 56px;
+    flex: none;
+  }
+
+  .brand { font-size: 52px; }
+  .bonuses { flex-direction: column; gap: 16px; }
+}

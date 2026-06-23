@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MAVLO — Gaming Channel</title>
+  <meta name="description" content="Официальный сайт игрового YouTube-канала MAVLO. Видео, стримы, расписание и многое другое.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <nav class="navbar" id="navbar">
+    <div class="container nav-container">
+      <a href="#" class="logo">MAV<span>LO</span></a>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="#videos">Видео</a></li>
+        <li><a href="#about">Обо мне</a></li>
+        <li><a href="#schedule">Стримы</a></li>
+        <li><a href="#support">Поддержать</a></li>
+        <li><a href="majestic/" class="nav-majestic">⚔ MAJESTIC</a></li>
+      </ul>
+      <button class="nav-toggle" id="navToggle" aria-label="Меню">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero" id="home">
+    <div class="hero-grid"></div>
+    <div class="hero-glow"></div>
+    <div class="container">
+      <div class="hero-inner">
+        <div class="hero-avatar-wrap">
+          <div class="hero-avatar">
+            <!-- TODO: замени на свой аватар <img src="img/avatar.jpg" alt="MAVLO"> -->
+            <div class="avatar-placeholder">M</div>
+          </div>
+          <div class="avatar-ring"></div>
+          <div class="avatar-ring avatar-ring-2"></div>
+        </div>
+        <div class="hero-content">
+          <span class="hero-tag">// GAMING CHANNEL</span>
+          <h1 class="hero-name">MAVLO</h1>
+          <p class="hero-desc">
+            Игры, стримы, разборы и настоящие эмоции.<br>
+            Подписывайся — пропустишь самое интересное.
+          </p>
+          <div class="hero-stats">
+            <div class="stat-item">
+              <span class="stat-num"><!-- TODO --> 000K</span>
+              <span class="stat-label">подписчиков</span>
+            </div>
+            <div class="stat-divider"></div>
+            <div class="stat-item">
+              <span class="stat-num"><!-- TODO --> 000+</span>
+              <span class="stat-label">видео</span>
+            </div>
+            <div class="stat-divider"></div>
+            <div class="stat-item">
+              <span class="stat-num"><!-- TODO --> 000+</span>
+              <span class="stat-label">стримов</span>
+            </div>
+          </div>
+          <div class="hero-btns">
+            <a href="https://youtube.com/@YOURCHANNELNAME" target="_blank" rel="noopener" class="btn btn-primary">
+              <i class="fab fa-youtube"></i> Подписаться
+            </a>
+            <a href="#videos" class="btn btn-ghost">
+              <i class="fas fa-play"></i> Смотреть видео
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <a href="#videos" class="scroll-hint">
+      <i class="fas fa-chevron-down"></i>
+    </a>
+  </section>
+
+  <!-- LATEST VIDEOS -->
+  <section class="section" id="videos">
+    <div class="container">
+      <div class="section-head">
+        <span class="section-tag">// ПОСЛЕДНЕЕ</span>
+        <h2 class="section-title">Новые видео</h2>
+      </div>
+      <div class="videos-grid">
+
+        <!-- TODO: замени VIDEO_ID_1 .. VIDEO_ID_6 на реальные ID из YouTube -->
+        <article class="video-card">
+          <a href="https://youtube.com/watch?v=VIDEO_ID_1" target="_blank" rel="noopener" class="video-thumb">
+            <img src="https://img.youtube.com/vi/VIDEO_ID_1/maxresdefault.jpg" alt="Видео" loading="lazy">
+            <div class="video-overlay"><i class="fas fa-play"></i></div>
+            <span class="video-dur">00:00</span>
+          </a>
+          <div class="video-body">
+            <h3 class="video-title">Название видео — поставь сюда реальное название</h3>
+            <div class="video-meta">
+              <span><i class="fas fa-eye"></i> 000K просмотров</span>
+              <span><i class="far fa-calendar"></i> 2 дня назад</span>
+            </div>
+          </div>
+        </article>
+
+        <article class="video-card">
+          <a href="https://youtube.com/watch?v=VIDEO_ID_2" target="_blank" rel="noopener" class="video-thumb">
+            <img src="https://img.youtube.com/vi/VIDEO_ID_2/maxresdefault.jpg" alt="Видео" loading="lazy">
+            <div class="video-overlay"><i class="fas fa-play"></i></div>
+            <span class="video-dur">00:00</span>
+          </a>
+          <div class="video-body">
+            <h3 class="video-title">Название видео — поставь сюда реальное название</h3>
+            <div class="video-meta">
+              <span><i class="fas fa-eye"></i> 000K просмотров</span>
+              <span><i class="far fa-calendar"></i> 5 дней назад</span>
+            </div>
+          </div>
+        </article>
+
+        <article class="video-card">
+          <a href="https://youtube.com/watch?v=VIDEO_ID_3" target="_blank" rel="noopener" class="video-thumb">
+            <img src="https://img.youtube.com/vi/VIDEO_ID_3/maxresdefault.jpg" alt="Видео" loading="lazy">
+            <div class="video-overlay"><i class="fas fa-play"></i></div>
+            <span class="video-dur">00:00</span>
+          </a>
+          <div class="video-body">
+            <h3 class="video-title">Название видео — поставь сюда реальное название</h3>
+            <div class="video-meta">
+              <span><i class="fas fa-eye"></i> 000K просмотров</span>
+              <span><i class="far fa-calendar"></i> 1 неделю назад</span>
+            </div>
+          </div>
+        </article>
+
+        <article class="video-card">
+          <a href="https://youtube.com/watch?v=VIDEO_ID_4" target="_blank" rel="noopener" class="video-thumb">
+            <img src="https://img.youtube.com/vi/VIDEO_ID_4/maxresdefault.jpg" alt="Видео" loading="lazy">
+            <div class="video-overlay"><i class="fas fa-play"></i></div>
+            <span class="video-dur">00:00</span>
+          </a>
+          <div class="video-body">
+            <h3 class="video-title">Название видео — поставь сюда реальное название</h3>
+            <div class="video-meta">
+              <span><i class="fas fa-eye"></i> 000K просмотров</span>
+              <span><i class="far fa-calendar"></i> 2 недели назад</span>
+            </div>
+          </div>
+        </article>
+
+        <article class="video-card">
+          <a href="https://youtube.com/watch?v=VIDEO_ID_5" target="_blank" rel="noopener" class="video-thumb">
+            <img src="https://img.youtube.com/vi/VIDEO_ID_5/maxresdefault.jpg" alt="Видео" loading="lazy">
+            <div class="video-overlay"><i class="fas fa-play"></i></div>
+            <span class="video-dur">00:00</span>
+          </a>
+          <div class="video-body">
+            <h3 class="video-title">Название видео — поставь сюда реальное название</h3>
+            <div class="video-meta">
+              <span><i class="fas fa-eye"></i> 000K просмотров</span>
+              <span><i class="far fa-calendar"></i> 3 недели назад</span>
+            </div>
+          </div>
+        </article>
+
+        <article class="video-card">
+          <a href="https://youtube.com/watch?v=VIDEO_ID_6" target="_blank" rel="noopener" class="video-thumb">
+            <img src="https://img.youtube.com/vi/VIDEO_ID_6/maxresdefault.jpg" alt="Видео" loading="lazy">
+            <div class="video-overlay"><i class="fas fa-play"></i></div>
+            <span class="video-dur">00:00</span>
+          </a>
+          <div class="video-body">
+            <h3 class="video-title">Название видео — поставь сюда реальное название</h3>
+            <div class="video-meta">
+              <span><i class="fas fa-eye"></i> 000K просмотров</span>
+              <span><i class="far fa-calendar"></i> 1 месяц назад</span>
+            </div>
+          </div>
+        </article>
+
+      </div>
+      <div class="section-foot">
+        <a href="https://youtube.com/@YOURCHANNELNAME/videos" target="_blank" rel="noopener" class="btn btn-ghost">
+          Все видео на YouTube <i class="fas fa-arrow-right"></i>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section class="section section-alt" id="about">
+    <div class="container">
+      <div class="about-grid">
+        <div class="about-photo">
+          <!-- TODO: замени на своё фото <img src="img/photo.jpg" alt="MAVLO"> -->
+          <div class="photo-placeholder">
+            <span>M</span>
+          </div>
+          <div class="about-photo-glow"></div>
+        </div>
+        <div class="about-text">
+          <span class="section-tag">// ОБО МНЕ</span>
+          <h2 class="section-title">Привет, я MAVLO</h2>
+          <!-- TODO: замени на свой текст -->
+          <p>Я — игровой блогер и стример. Играю в самые разные игры: от хардкорных соулслайков до весёлых мультиплеерных батлов с подписчиками.</p>
+          <p>На канале ты найдёшь честные обзоры, прохождения, нарезки со стримов и много всего интересного. Без лишней воды — только годный контент.</p>
+          <p>Жду тебя в нашем комьюнити!</p>
+          <div class="about-tags">
+            <!-- TODO: добавь свои жанры/игры -->
+            <span class="tag">Action RPG</span>
+            <span class="tag">Battle Royale</span>
+            <span class="tag">Survival</span>
+            <span class="tag">Story Games</span>
+            <span class="tag">Multiplayer</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- STREAM SCHEDULE -->
+  <section class="section" id="schedule">
+    <div class="container">
+      <div class="section-head">
+        <span class="section-tag">// РАСПИСАНИЕ</span>
+        <h2 class="section-title">Когда стримы</h2>
+      </div>
+      <div class="schedule-grid">
+        <div class="schedule-day active">
+          <span class="day-name">Пн</span>
+          <div class="day-info">
+            <!-- TODO: поставь реальное время или "Выходной" -->
+            <span class="day-time">20:00</span>
+            <span class="day-game">Название игры</span>
+          </div>
+        </div>
+        <div class="schedule-day">
+          <span class="day-name">Вт</span>
+          <div class="day-info">
+            <span class="day-time day-off">Выходной</span>
+          </div>
+        </div>
+        <div class="schedule-day active">
+          <span class="day-name">Ср</span>
+          <div class="day-info">
+            <span class="day-time">20:00</span>
+            <span class="day-game">Название игры</span>
+          </div>
+        </div>
+        <div class="schedule-day">
+          <span class="day-name">Чт</span>
+          <div class="day-info">
+            <span class="day-time day-off">Выходной</span>
+          </div>
+        </div>
+        <div class="schedule-day active">
+          <span class="day-name">Пт</span>
+          <div class="day-info">
+            <span class="day-time">21:00</span>
+            <span class="day-game">Название игры</span>
+          </div>
+        </div>
+        <div class="schedule-day active">
+          <span class="day-name">Сб</span>
+          <div class="day-info">
+            <span class="day-time">19:00</span>
+            <span class="day-game">Название игры</span>
+          </div>
+        </div>
+        <div class="schedule-day active">
+          <span class="day-name">Вс</span>
+          <div class="day-info">
+            <span class="day-time">19:00</span>
+            <span class="day-game">Название игры</span>
+          </div>
+        </div>
+      </div>
+      <div class="schedule-note">
+        <i class="fas fa-info-circle"></i>
+        Время московское (МСК). Расписание может меняться — следи за анонсами в <a href="https://t.me/YOURCHANNEL" target="_blank">Telegram</a>.
+      </div>
+      <div class="section-foot">
+        <a href="https://twitch.tv/YOURCHANNELNAME" target="_blank" rel="noopener" class="btn btn-twitch">
+          <i class="fab fa-twitch"></i> Смотреть стримы на Twitch
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- SUPPORT -->
+  <section class="section section-alt" id="support">
+    <div class="container">
+      <div class="section-head">
+        <span class="section-tag">// ПОДДЕРЖКА</span>
+        <h2 class="section-title">Поддержи канал</h2>
+        <p class="section-desc">Любая поддержка помогает делать контент лучше и чаще. Спасибо!</p>
+      </div>
+      <div class="support-grid">
+        <a href="https://boosty.to/YOURCHANNEL" target="_blank" rel="noopener" class="support-card support-boosty">
+          <div class="support-icon">
+            <i class="fas fa-bolt"></i>
+          </div>
+          <div class="support-info">
+            <span class="support-name">Boosty</span>
+            <span class="support-desc">Подписка с эксклюзивным контентом</span>
+          </div>
+          <i class="fas fa-arrow-right support-arrow"></i>
+        </a>
+        <a href="https://www.donationalerts.com/r/YOURCHANNEL" target="_blank" rel="noopener" class="support-card support-da">
+          <div class="support-icon">
+            <i class="fas fa-heart"></i>
+          </div>
+          <div class="support-info">
+            <span class="support-name">Donation Alerts</span>
+            <span class="support-desc">Задонатить во время стрима</span>
+          </div>
+          <i class="fas fa-arrow-right support-arrow"></i>
+        </a>
+        <!-- TODO: добавь ещё платформы если нужно (Patreon, YooMoney и т.д.) -->
+      </div>
+    </div>
+  </section>
+
+  <!-- SOCIALS -->
+  <section class="socials-bar">
+    <div class="container">
+      <span class="socials-label">Я в соцсетях:</span>
+      <div class="socials-list">
+        <!-- TODO: замени ссылки на свои -->
+        <a href="https://youtube.com/@YOURCHANNELNAME" target="_blank" rel="noopener" class="social-link social-yt" aria-label="YouTube">
+          <i class="fab fa-youtube"></i>
+          <span>YouTube</span>
+        </a>
+        <a href="https://twitch.tv/YOURCHANNELNAME" target="_blank" rel="noopener" class="social-link social-twitch" aria-label="Twitch">
+          <i class="fab fa-twitch"></i>
+          <span>Twitch</span>
+        </a>
+        <a href="https://t.me/YOURCHANNEL" target="_blank" rel="noopener" class="social-link social-tg" aria-label="Telegram">
+          <i class="fab fa-telegram"></i>
+          <span>Telegram</span>
+        </a>
+        <a href="https://vk.com/YOURCHANNEL" target="_blank" rel="noopener" class="social-link social-vk" aria-label="VKontakte">
+          <i class="fab fa-vk"></i>
+          <span>VKontakte</span>
+        </a>
+        <a href="https://discord.gg/YOURSERVER" target="_blank" rel="noopener" class="social-link social-discord" aria-label="Discord">
+          <i class="fab fa-discord"></i>
+          <span>Discord</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-inner">
+        <a href="#" class="footer-logo">MAV<span>LO</span></a>
+        <nav class="footer-nav">
+          <a href="#videos">Видео</a>
+          <a href="#about">Обо мне</a>
+          <a href="#schedule">Стримы</a>
+          <a href="#support">Поддержать</a>
+          <a href="majestic/">MAJESTIC</a>
+        </nav>
+        <p class="footer-copy">&copy; 2024 MAVLO. Все права защищены.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/main.js"></script>
+</body>
+</html>
