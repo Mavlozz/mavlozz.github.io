@@ -383,10 +383,17 @@ body {
   padding-left: 38px;
 }
 
-.sig-img {
-  height: 60px;
+.cta-right-inner {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.lichno-img {
+  height: 110px;
   width: auto;
   object-fit: contain;
+  flex-shrink: 0;
 }
 
 .sig-text {
