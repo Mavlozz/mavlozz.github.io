@@ -180,3 +180,89 @@ async function loadStats() {
 
 loadVideos();
 loadStats();
+loadClips();
+checkLive();
+setInterval(checkLive, 60000);
+
+// ============================================================
+//  TWITCH LIVE CHECK
+// ============================================================
+async function checkLive() {
+  try {
+    const res  = await fetch('https://decapi.me/twitch/uptime/mmavlo');
+    const text = (await res.text()).trim();
+    const live = !/offline/i.test(text) && /\d/.test(text);
+    const dot     = document.getElementById('liveDot');
+    const navLive = document.getElementById('navLive');
+    const btnText = document.getElementById('twitchBtnText');
+    if (live) {
+      if (dot)     { dot.style.display = 'inline-block'; dot.title = `Идёт стрим: ${text}`; }
+      if (navLive) navLive.style.display = 'inline-block';
+      if (btnText) btnText.textContent = '🔴 В ЭФИРЕ — смотреть';
+    } else {
+      if (dot)     dot.style.display = 'none';
+      if (navLive) navLive.style.display = 'none';
+      if (btnText) btnText.textContent = 'Смотреть стримы на Twitch';
+    }
+  } catch {}
+}
+
+// ============================================================
+//  CLIPS — YouTube Shorts as highlights
+// ============================================================
+async function loadClips() {
+  const grid = document.getElementById('clipsGrid');
+  if (!grid) return;
+
+  const RSS2JSON = 'https://api.rss2json.com/v1/api.json?rss_url=';
+  const fetches = Object.values(YT_CHANNELS).map(ch =>
+    fetch(RSS2JSON + encodeURIComponent(`https://www.youtube.com/feeds/videos.xml?channel_id=${ch.id}`))
+      .then(r => r.json()).then(d => ({ data: d, label: ch.label }))
+  );
+
+  let results;
+  try { results = await Promise.allSettled(fetches); } catch { results = []; }
+
+  const shorts = [];
+  for (const res of results) {
+    if (res.status !== 'fulfilled') continue;
+    const { data, label } = res.value;
+    if (data.status !== 'ok') continue;
+    for (const item of (data.items || [])) {
+      if (item.link.includes('/shorts/')) {
+        shorts.push({ item, label, date: new Date(item.pubDate) });
+      }
+    }
+  }
+
+  shorts.sort((a, b) => b.date - a.date);
+  const top = shorts.slice(0, 8);
+
+  if (!top.length) {
+    grid.closest('section').style.display = 'none';
+    return;
+  }
+
+  grid.innerHTML = '';
+  for (const { item, label } of top) {
+    const vidId = videoIdFromUrl(item.link);
+    if (!vidId) continue;
+    const thumb = `https://img.youtube.com/vi/${vidId}/mqdefault.jpg`;
+    const href  = `https://youtube.com/shorts/${vidId}`;
+    const card  = document.createElement('a');
+    card.className = 'clip-card';
+    card.href = href;
+    card.target = '_blank';
+    card.rel = 'noopener';
+    card.innerHTML = `
+      <div class="clip-thumb">
+        <img src="${thumb}" alt="${item.title.replace(/"/g,'&quot;')}" loading="lazy"
+             onerror="this.src='https://img.youtube.com/vi/${vidId}/hqdefault.jpg'">
+        <div class="clip-overlay"><i class="fab fa-youtube"></i></div>
+        <span class="clip-badge">SHORT</span>
+      </div>
+      <p class="clip-title">${item.title}</p>`;
+    grid.appendChild(card);
+  }
+  observeFade();
+}

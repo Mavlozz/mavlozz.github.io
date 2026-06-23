@@ -198,6 +198,117 @@ ul { list-style: none; }
   transform: translateY(-2px);
 }
 
+/* Live dot */
+.live-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #ff4444;
+  display: inline-block;
+  margin-right: 4px;
+  flex-shrink: 0;
+  animation: live-pulse 1.2s ease-in-out infinite;
+}
+
+@keyframes live-pulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(255,68,68,0.7); }
+  50%       { box-shadow: 0 0 0 6px rgba(255,68,68,0); }
+}
+
+.nav-live {
+  display: inline-block;
+  background: #ff4444;
+  color: #fff;
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+  padding: 1px 5px;
+  border-radius: 4px;
+  margin-left: 4px;
+  vertical-align: middle;
+  animation: live-pulse 1.2s ease-in-out infinite;
+}
+
+/* Clips row — horizontal scroll */
+.clips-row {
+  display: flex;
+  gap: 14px;
+  overflow-x: auto;
+  padding-bottom: 12px;
+  scrollbar-width: thin;
+  scrollbar-color: var(--accent) transparent;
+  margin-top: 44px;
+}
+
+.clips-row::-webkit-scrollbar { height: 4px; }
+.clips-row::-webkit-scrollbar-track { background: transparent; }
+.clips-row::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 4px; }
+
+.clip-card {
+  flex: 0 0 180px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  text-decoration: none;
+  color: var(--text);
+  transition: transform 0.2s ease;
+}
+
+.clip-card:hover { transform: translateY(-4px); }
+
+.clip-thumb {
+  position: relative;
+  border-radius: 10px;
+  overflow: hidden;
+  aspect-ratio: 9/16;
+  background: var(--surface);
+}
+
+.clip-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.clip-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28px;
+  color: #fff;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.clip-card:hover .clip-overlay { opacity: 1; }
+
+.clip-badge {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  background: var(--accent);
+  color: #fff;
+  font-size: 10px;
+  font-weight: 800;
+  padding: 2px 7px;
+  border-radius: 4px;
+  letter-spacing: 0.5px;
+}
+
+.clip-title {
+  font-size: 12px;
+  color: var(--text-muted);
+  line-height: 1.4;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
 /* ============================================================
    HERO
    ============================================================ */

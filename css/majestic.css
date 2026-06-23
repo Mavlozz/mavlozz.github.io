@@ -638,13 +638,39 @@ body {
 @media (max-width: 900px) {
   body { overflow: auto; }
   .page { flex-direction: column-reverse; min-height: auto; }
-  .right-col { padding: 52px 24px 0; min-height: 320px; }
-  .char-scene { width: 240px; height: 240px; }
-  .left-col { padding: 36px 24px 52px; flex: none; min-height: auto; }
-  .brand { font-size: 52px; letter-spacing: -2px; }
+
+  .right-col {
+    padding: 40px 24px 0;
+    min-height: 300px;
+    align-self: auto;
+    overflow: hidden;
+  }
+
+  .char-scene {
+    width: 220px;
+    height: 220px;
+    margin: 0 auto;
+  }
+
+  .char-img {
+    height: 380px;
+    max-height: 55vw;
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%) !important; /* disable parallax on mobile */
+  }
+
+  .left-col { padding: 32px 20px 48px; flex: none; min-height: auto; }
+  .brand { font-size: 44px; letter-spacing: -2px; }
   .bonuses { flex-direction: column; gap: 14px; }
   .cta-row { grid-template-columns: 1fr; }
   .cta-right { padding-top: 0; }
+  .cta-right-inner { flex-wrap: wrap; gap: 10px; }
+  .lichno-img { height: 140px; }
   .signature { padding-left: 0; }
   .extra-sub { padding-left: 0; }
+
+  .promo-anim-box { min-width: 280px; padding: 20px 22px; }
+  .promo-anim-row { font-size: 15px; }
 }

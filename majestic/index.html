@@ -5,6 +5,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>MAVLO × Majestic Roleplay — Играй в GTA 5 RP</title>
   <meta name="description" content="Станьте кем угодно в GTA 5. Majestic Roleplay — сервер, на котором стримит MAVLO. Промокод MAVLO для бонусов.">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='18' fill='%23e8185d'/><text x='50' y='74' font-size='66' font-family='Arial Black,Arial' font-weight='900' fill='white' text-anchor='middle'>M</text></svg>">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://mavlo.ru/majestic/">
+  <meta property="og:title" content="MAVLO × Majestic Roleplay — GTA 5 RP">
+  <meta property="og:description" content="Промокод MAVLO — бонусы при регистрации на сервере Majestic Roleplay.">
+  <meta property="og:image" content="https://mavlozz.github.io/img/og.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="https://mavlozz.github.io/img/og.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,600;0,700;0,800;0,900;1,800;1,900&family=Inter:wght@400;500;600&family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
@@ -140,6 +148,26 @@
         }, 2000);
       });
     }
+
+    // PARALLAX — character follows mouse
+    (function() {
+      const charImg = document.querySelector('.char-img');
+      const scene   = document.querySelector('.char-scene');
+      if (!charImg || !scene || window.innerWidth < 900) return;
+      let tX = 0, tY = 0, cX = 0, cY = 0;
+      document.addEventListener('mousemove', e => {
+        const dx = (e.clientX / window.innerWidth  - 0.5);
+        const dy = (e.clientY / window.innerHeight - 0.5);
+        tX = dx * 18; tY = dy * 10;
+        cX = dx * 10; cY = dy * 6;
+      });
+      function tick() {
+        charImg.style.transform = `translateX(calc(-50% + ${tX}px)) translateY(${tY}px)`;
+        scene.style.transform   = `translateX(${cX}px) translateY(${cY}px)`;
+        requestAnimationFrame(tick);
+      }
+      tick();
+    })();
 
     // PROMO COMMAND ANIMATION (loops forever)
     (function() {
