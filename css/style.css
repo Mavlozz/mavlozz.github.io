@@ -21,6 +21,7 @@
   --tg-blue: #229ed9;
   --vk-blue: #0077ff;
   --discord-blue: #5865f2;
+  --steam-blue: #1b2838;
   --boosty-orange: #ff6d1f;
   --da-orange: #f8693a;
   --radius: 12px;
@@ -752,6 +753,7 @@ ul { list-style: none; }
 .social-tg:hover  { border-color: var(--tg-blue);     color: var(--tg-blue);     box-shadow: 0 0 16px rgba(34,158,217,0.2); }
 .social-vk:hover  { border-color: var(--vk-blue);     color: var(--vk-blue);     box-shadow: 0 0 16px rgba(0,119,255,0.2); }
 .social-discord:hover { border-color: var(--discord-blue); color: var(--discord-blue); box-shadow: 0 0 16px rgba(88,101,242,0.2); }
+.social-steam:hover  { border-color: #66c0f4;             color: #66c0f4;             box-shadow: 0 0 16px rgba(102,192,244,0.2); }
 
 /* ============================================================
    FOOTER
