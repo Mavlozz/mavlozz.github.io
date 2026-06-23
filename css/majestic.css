@@ -385,33 +385,34 @@ body {
 
 .sig-text {
   font-family: 'Dancing Script', cursive;
-  font-size: 15px;
+  font-size: 14px;
   color: var(--muted);
   line-height: 1.2;
 }
 
 .sig-text strong {
   display: block;
-  font-size: 20px;
+  font-family: 'Dancing Script', cursive;
+  font-size: 22px;
   color: #fff;
   font-weight: 700;
+  letter-spacing: 0.5px;
 }
 
 .sig-avatar-placeholder {
-  width: 44px;
-  height: 44px;
+  width: 48px;
+  height: 48px;
   border-radius: 50%;
-  background: linear-gradient(135deg, var(--pink) 0%, #6b0024 100%);
+  background: var(--pink);
   display: flex;
   align-items: center;
   justify-content: center;
   font-family: 'Montserrat', sans-serif;
   font-weight: 900;
-  font-size: 18px;
-  color: rgba(255,255,255,0.6);
+  font-size: 20px;
+  color: #fff;
   flex-shrink: 0;
-  border: 2px solid rgba(232,24,93,0.5);
-  box-shadow: 0 0 12px rgba(232,24,93,0.3);
+  box-shadow: 0 0 20px rgba(232,24,93,0.6), 0 0 0 2px rgba(232,24,93,0.4);
 }
 
 .sig-avatar {
