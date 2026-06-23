@@ -701,59 +701,104 @@ ul { list-style: none; }
 .support-card:hover .support-arrow { transform: translateX(4px); color: var(--text-muted); }
 
 /* ============================================================
-   SOCIALS BAR
+   SOCIALS SECTION — brand-color cards
    ============================================================ */
-.socials-bar {
-  background: var(--bg-card);
-  border-top: 1px solid var(--border-subtle);
-  border-bottom: 1px solid var(--border-subtle);
-  padding: 32px 0;
+.socials-section {
+  padding: 80px 0;
+  background: linear-gradient(to bottom, var(--bg-card), var(--bg));
 }
 
-.socials-bar .container {
+.socials-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+  gap: 14px;
+  margin-top: 44px;
+}
+
+.soc-card {
   display: flex;
   align-items: center;
-  gap: 32px;
-  flex-wrap: wrap;
+  gap: 16px;
+  padding: 18px 20px;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.07);
+  border-radius: var(--radius);
+  color: #fff;
+  transition: all 0.22s ease;
+  position: relative;
+  overflow: hidden;
 }
 
-.socials-label {
-  font-size: 13px;
-  font-weight: 500;
-  color: var(--text-dim);
+.soc-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(120deg, var(--soc), transparent 55%);
+  opacity: 0;
+  transition: opacity 0.22s ease;
+}
+
+.soc-card:hover {
+  border-color: var(--soc);
+  box-shadow: 0 6px 32px var(--soc-glow), 0 1px 0 rgba(255,255,255,0.04) inset;
+  transform: translateY(-3px);
+}
+
+.soc-card:hover::before { opacity: 0.09; }
+
+.soc-icon {
+  position: relative;
+  z-index: 1;
+  width: 50px;
+  height: 50px;
+  border-radius: 13px;
+  background: var(--soc);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  color: #fff;
+  flex-shrink: 0;
+  box-shadow: 0 4px 16px var(--soc-glow);
+}
+
+.soc-info {
+  position: relative;
+  z-index: 1;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  min-width: 0;
+}
+
+.soc-name {
+  font-weight: 700;
+  font-size: 15px;
+  color: #fff;
+}
+
+.soc-handle {
+  font-size: 12px;
+  color: rgba(255,255,255,0.45);
   white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
-.socials-list {
-  display: flex;
-  gap: 12px;
-  flex-wrap: wrap;
+.soc-arrow {
+  position: relative;
+  z-index: 1;
+  color: rgba(255,255,255,0.2);
+  font-size: 12px;
+  flex-shrink: 0;
+  transition: color 0.2s, transform 0.2s;
 }
 
-.social-link {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 8px 16px;
-  border-radius: var(--radius-sm);
-  font-size: 14px;
-  font-weight: 500;
-  color: var(--text-muted);
-  border: 1px solid var(--border-subtle);
-  background: var(--bg);
-  transition: all var(--transition);
+.soc-card:hover .soc-arrow {
+  color: var(--soc);
+  transform: translateX(3px);
 }
-
-.social-link i { font-size: 16px; }
-
-.social-link:hover { transform: translateY(-2px); }
-
-.social-yt:hover  { border-color: var(--yt-red);      color: var(--yt-red);      box-shadow: 0 0 16px rgba(255,0,0,0.2); }
-.social-twitch:hover { border-color: var(--twitch-purple); color: var(--twitch-purple); box-shadow: 0 0 16px rgba(145,70,255,0.2); }
-.social-tg:hover  { border-color: var(--tg-blue);     color: var(--tg-blue);     box-shadow: 0 0 16px rgba(34,158,217,0.2); }
-.social-vk:hover  { border-color: var(--vk-blue);     color: var(--vk-blue);     box-shadow: 0 0 16px rgba(0,119,255,0.2); }
-.social-discord:hover { border-color: var(--discord-blue); color: var(--discord-blue); box-shadow: 0 0 16px rgba(88,101,242,0.2); }
-.social-steam:hover  { border-color: #66c0f4;             color: #66c0f4;             box-shadow: 0 0 16px rgba(102,192,244,0.2); }
 
 /* ============================================================
    FOOTER
@@ -857,7 +902,7 @@ ul { list-style: none; }
 
   .support-grid { grid-template-columns: 1fr; }
 
-  .socials-bar .container { justify-content: center; }
+  .socials-grid { grid-template-columns: 1fr 1fr; }
 }
 
 @media (max-width: 480px) {

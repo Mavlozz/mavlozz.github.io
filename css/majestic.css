@@ -439,8 +439,11 @@ body {
 
 .socials a:hover { color: var(--pink); transform: translateY(-2px); }
 
+.mj-logo-link { display: block; margin-bottom: 4px; }
+.mj-logo-img { height: 22px; width: auto; }
+
 /* ============================================================
-   RIGHT COLUMN — character
+   RIGHT COLUMN — character with real Majestic SVGs
    ============================================================ */
 .right-col {
   position: relative;
@@ -451,72 +454,42 @@ body {
   justify-content: center;
 }
 
-.char-circle {
+.char-wrap {
   position: relative;
-  width: clamp(280px, 38vw, 540px);
-  height: clamp(280px, 38vw, 540px);
-  border-radius: 50%;
-  background: var(--pink);
-  box-shadow:
-    0 0 60px rgba(232, 24, 93, 0.55),
-    0 0 120px rgba(232, 24, 93, 0.25),
-    0 0 200px rgba(232, 24, 93, 0.1);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  overflow: visible;
+  width: clamp(280px, 38vw, 520px);
+  height: clamp(280px, 38vw, 520px);
 }
 
-/* inner overflow hidden only for dots */
-.char-circle-inner {
+.char-circle-svg {
   position: absolute;
   inset: 0;
-  border-radius: 50%;
-  overflow: hidden;
+  width: 100%;
+  height: 100%;
+  filter:
+    drop-shadow(0 0 50px rgba(232, 24, 93, 0.7))
+    drop-shadow(0 0 100px rgba(232, 24, 93, 0.3));
 }
 
-.dots-pattern {
+.char-dots-svg {
   position: absolute;
   inset: 0;
-  border-radius: 50%;
-  background-image: radial-gradient(circle, rgba(255,255,255,0.2) 1.5px, transparent 1.5px);
-  background-size: 26px 26px;
-  pointer-events: none;
+  width: 100%;
+  height: 100%;
+  opacity: 0.9;
 }
 
 .char-img {
   position: absolute;
-  bottom: -5%;
+  bottom: -8%;
   left: 50%;
   transform: translateX(-50%);
-  height: 115%;
+  height: 118%;
   width: auto;
   object-fit: contain;
   z-index: 3;
-  filter: drop-shadow(-8px 0 30px rgba(0,0,0,0.8)) drop-shadow(0 20px 40px rgba(0,0,0,0.6));
-}
-
-.char-placeholder {
-  position: relative;
-  z-index: 2;
-  text-align: center;
-  font-size: 14px;
-  font-weight: 600;
-  color: rgba(255,255,255,0.3);
-  line-height: 1.8;
-  user-select: none;
-  padding: 24px;
-}
-
-.char-placeholder::before {
-  content: '';
-  display: block;
-  width: 48px;
-  height: 48px;
-  border: 2px dashed rgba(255,255,255,0.2);
-  border-radius: 8px;
-  margin: 0 auto 12px;
-  background: rgba(0,0,0,0.15);
+  filter:
+    drop-shadow(-10px 0 30px rgba(0,0,0,0.9))
+    drop-shadow(0 30px 50px rgba(0,0,0,0.7));
 }
 
 .sparkle {
@@ -551,7 +524,7 @@ body {
   body { overflow: auto; }
   .page { flex-direction: column-reverse; min-height: auto; }
   .right-col { padding: 52px 24px 0; min-height: 320px; }
-  .char-circle { width: 240px; height: 240px; }
+  .char-wrap { width: 240px; height: 240px; }
   .left-col { padding: 36px 24px 52px; flex: none; min-height: auto; }
   .brand { font-size: 52px; letter-spacing: -2px; }
   .bonuses { flex-direction: column; gap: 14px; }
