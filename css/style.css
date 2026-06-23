@@ -353,6 +353,45 @@ ul { list-style: none; }
 
 .hero-btns { display: flex; gap: 12px; flex-wrap: wrap; }
 
+.hero-socials {
+  display: flex;
+  gap: 10px;
+  margin-top: 20px;
+  flex-wrap: wrap;
+}
+
+.hero-soc {
+  position: relative;
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.08);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 17px;
+  color: var(--c, #fff);
+  transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
+}
+
+.hero-soc sup {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  font-size: 9px;
+  font-weight: 700;
+  line-height: 1;
+  color: var(--c, #fff);
+  opacity: 0.8;
+}
+
+.hero-soc:hover {
+  background: rgba(255,255,255,0.1);
+  box-shadow: 0 0 14px color-mix(in srgb, var(--c) 40%, transparent);
+  transform: translateY(-2px);
+}
+
 /* Scroll hint */
 .scroll-hint {
   position: absolute;
