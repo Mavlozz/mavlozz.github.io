@@ -447,6 +447,7 @@ body {
   position: relative;
   z-index: 2;
   flex: 1;
+  align-self: stretch;        /* fill full page height */
   display: flex;
   align-items: center;
   justify-content: center;
@@ -496,15 +497,17 @@ body {
   opacity: 0.35;
 }
 
-/* Character image — transparent PNG, no blend needed */
+/* Character — anchored to bottom of right-col, spans full height */
 .char-img {
   position: absolute;
-  bottom: -12%;
+  bottom: 0;
   left: 50%;
   transform: translateX(-50%);
-  height: 140%;
+  height: 96%;
+  max-height: 96vh;
   width: auto;
   object-fit: contain;
+  object-position: bottom center;
   z-index: 3;
   filter: drop-shadow(-12px 0 24px rgba(0,0,0,0.7)) drop-shadow(0 24px 40px rgba(0,0,0,0.5));
 }
