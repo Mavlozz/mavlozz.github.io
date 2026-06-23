@@ -496,7 +496,7 @@ body {
   opacity: 0.35;
 }
 
-/* Character image — darken blend: white bg disappears, dark jacket stays black */
+/* Character image — transparent PNG, no blend needed */
 .char-img {
   position: absolute;
   bottom: -12%;
@@ -506,7 +506,7 @@ body {
   width: auto;
   object-fit: contain;
   z-index: 3;
-  mix-blend-mode: darken;
+  filter: drop-shadow(-12px 0 24px rgba(0,0,0,0.7)) drop-shadow(0 24px 40px rgba(0,0,0,0.5));
 }
 
 @keyframes pulse-sparkle {
