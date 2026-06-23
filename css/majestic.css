@@ -531,6 +531,99 @@ body {
 }
 
 /* ============================================================
+   PROMO COMMAND ANIMATION OVERLAY
+   ============================================================ */
+.promo-anim-overlay {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+
+.promo-anim-overlay.visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.promo-anim-box {
+  background: rgba(8, 8, 10, 0.92);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 12px;
+  padding: 28px 36px;
+  min-width: 380px;
+  box-shadow: 0 0 60px rgba(0,0,0,0.8), 0 0 0 1px rgba(255,255,255,0.05);
+  backdrop-filter: blur(16px);
+}
+
+.promo-anim-chat {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.promo-anim-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: 'Montserrat', monospace;
+  font-size: 18px;
+  font-weight: 700;
+  color: #fff;
+  min-height: 30px;
+}
+
+.promo-anim-hand {
+  font-size: 22px;
+  animation: hand-bounce 0.4s ease infinite alternate;
+}
+
+@keyframes hand-bounce {
+  from { transform: translateY(0); }
+  to   { transform: translateY(-3px); }
+}
+
+.promo-anim-input {
+  color: #fff;
+  letter-spacing: 1px;
+}
+
+.promo-anim-cursor {
+  color: var(--pink);
+  font-weight: 400;
+  animation: blink 0.6s step-end infinite;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+.promo-anim-success {
+  opacity: 0;
+  transform: translateY(6px);
+  transition: opacity 0.4s ease, transform 0.4s ease;
+}
+
+.promo-anim-success.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.promo-anim-check { font-size: 22px; }
+
+.promo-anim-congrats {
+  color: #22c55e;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 1.4;
+}
+
+/* ============================================================
    RESPONSIVE
    ============================================================ */
 @media (max-width: 1200px) {

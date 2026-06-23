@@ -111,6 +111,22 @@
 
   </div>
 
+  <!-- PROMO ANIMATION OVERLAY -->
+  <div class="promo-anim-overlay" id="promoAnim">
+    <div class="promo-anim-box">
+      <div class="promo-anim-chat">
+        <div class="promo-anim-row" id="animRow1">
+          <span class="promo-anim-hand">✍️</span>
+          <span class="promo-anim-input" id="animInput"></span><span class="promo-anim-cursor" id="animCursor">|</span>
+        </div>
+        <div class="promo-anim-row promo-anim-success" id="animRow2">
+          <span class="promo-anim-check">✅</span>
+          <span class="promo-anim-congrats" id="animCongrats"></span>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <script>
     function copyPromo() {
       const code = document.getElementById('promoCode').textContent;
@@ -124,6 +140,56 @@
         }, 2000);
       });
     }
+
+    // PROMO COMMAND ANIMATION
+    (function() {
+      const overlay   = document.getElementById('promoAnim');
+      const inputEl   = document.getElementById('animInput');
+      const cursorEl  = document.getElementById('animCursor');
+      const row2      = document.getElementById('animRow2');
+      const congratsEl = document.getElementById('animCongrats');
+
+      const CMD      = '/promo mavlo';
+      const CONGRATS = 'Поздравляем! Теперь вы\nглавный администратор сервера';
+      const DELAY_START   = 1200;   // pause before typing starts
+      const DELAY_PER_CH  = 110;    // ms per character
+      const DELAY_SUCCESS = 700;    // pause after cmd before success text
+      const DELAY_CONGRATS_CH = 35; // ms per char for success text
+      const DELAY_HIDE    = 5000;   // hide after success finishes
+
+      function typeText(el, text, perChar, cb) {
+        let i = 0;
+        const id = setInterval(() => {
+          el.textContent += text[i];
+          i++;
+          if (i >= text.length) { clearInterval(id); if (cb) cb(); }
+        }, perChar);
+      }
+
+      function runAnim() {
+        overlay.classList.add('visible');
+
+        setTimeout(() => {
+          typeText(inputEl, CMD, DELAY_PER_CH, () => {
+            // hide cursor after typing
+            cursorEl.style.display = 'none';
+            setTimeout(() => {
+              row2.classList.add('show');
+              typeText(congratsEl, CONGRATS, DELAY_CONGRATS_CH, () => {
+                setTimeout(() => {
+                  overlay.style.transition = 'opacity 0.8s ease';
+                  overlay.style.opacity = '0';
+                  setTimeout(() => overlay.remove(), 800);
+                }, DELAY_HIDE);
+              });
+            }, DELAY_SUCCESS);
+          });
+        }, DELAY_START);
+      }
+
+      // Start after page fully loads
+      window.addEventListener('load', () => setTimeout(runAnim, 800));
+    })();
   </script>
 </body>
 </html>
