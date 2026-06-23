@@ -496,7 +496,7 @@ body {
   opacity: 0.35;
 }
 
-/* Character image on top — mix-blend-mode:multiply removes the white background */
+/* Character image — darken blend: white bg disappears, dark jacket stays black */
 .char-img {
   position: absolute;
   bottom: -12%;
@@ -506,7 +506,7 @@ body {
   width: auto;
   object-fit: contain;
   z-index: 3;
-  mix-blend-mode: multiply;
+  mix-blend-mode: darken;
 }
 
 @keyframes pulse-sparkle {
