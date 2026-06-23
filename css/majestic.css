@@ -80,24 +80,21 @@ body {
   text-shadow: 0 2px 40px rgba(255,255,255,0.08);
 }
 
-/* Tagblock */
-.tagblock { margin-bottom: 24px; }
-
 .headline {
   font-family: 'Montserrat', sans-serif;
   font-weight: 800;
-  font-size: clamp(16px, 2vw, 22px);
+  font-size: clamp(15px, 1.8vw, 21px);
   letter-spacing: 0.5px;
   color: #fff;
-  margin-bottom: 4px;
+  margin-bottom: 20px;
+  line-height: 1.4;
 }
 
 .pink-tag {
   font-family: 'Montserrat', sans-serif;
-  font-weight: 700;
-  font-size: clamp(14px, 1.6vw, 18px);
+  font-weight: 800;
   color: var(--pink);
-  letter-spacing: 1px;
+  letter-spacing: 0.5px;
 }
 
 /* Description */
@@ -115,11 +112,18 @@ body {
 
 .desc p:last-child { margin-bottom: 0; }
 
-/* Bonuses */
+/* Bonuses + promo row */
+.bonuses-row {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+  margin-bottom: 28px;
+  flex-wrap: wrap;
+}
+
 .bonuses {
   display: flex;
   gap: 32px;
-  margin-bottom: 32px;
 }
 
 .bonus {
@@ -181,7 +185,7 @@ body {
   width: fit-content;
   box-shadow: 0 4px 32px var(--pink-glow), inset 0 1px 0 rgba(255,255,255,0.15);
   transition: background 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
-  margin-bottom: 20px;
+  margin-bottom: 28px;
 }
 
 .play-btn i { font-size: 12px; }
@@ -198,14 +202,14 @@ body {
 .promo-wrap {
   display: flex;
   align-items: center;
-  gap: 12px;
-  margin-bottom: 32px;
+  gap: 0;
 }
 
 .promo-label {
   font-size: 13px;
   color: var(--muted);
   white-space: nowrap;
+  padding: 0 10px 0 14px;
 }
 
 .promo-box {
@@ -363,5 +367,6 @@ body {
   }
 
   .brand { font-size: 52px; }
+  .bonuses-row { flex-direction: column; align-items: flex-start; gap: 16px; }
   .bonuses { flex-direction: column; gap: 16px; }
 }
