@@ -141,53 +141,65 @@
       });
     }
 
-    // PROMO COMMAND ANIMATION
+    // PROMO COMMAND ANIMATION (loops forever)
     (function() {
-      const overlay   = document.getElementById('promoAnim');
-      const inputEl   = document.getElementById('animInput');
-      const cursorEl  = document.getElementById('animCursor');
-      const row2      = document.getElementById('animRow2');
+      const overlay    = document.getElementById('promoAnim');
+      const inputEl    = document.getElementById('animInput');
+      const cursorEl   = document.getElementById('animCursor');
+      const row2       = document.getElementById('animRow2');
       const congratsEl = document.getElementById('animCongrats');
 
-      const CMD      = '/promo mavlo';
-      const CONGRATS = 'Поздравляем! Теперь вы\nглавный администратор сервера';
-      const DELAY_START   = 1200;   // pause before typing starts
-      const DELAY_PER_CH  = 110;    // ms per character
-      const DELAY_SUCCESS = 700;    // pause after cmd before success text
-      const DELAY_CONGRATS_CH = 35; // ms per char for success text
-      const DELAY_HIDE    = 5000;   // hide after success finishes
+      const CMD               = '/promo mavlo';
+      const CONGRATS          = 'Поздравляем! Теперь вы\nглавный администратор сервера';
+      const DELAY_START       = 1000;
+      const DELAY_PER_CH      = 110;
+      const DELAY_SUCCESS     = 700;
+      const DELAY_CONGRATS_CH = 35;
+      const DELAY_HOLD        = 3000;  // how long success stays visible
+      const DELAY_BETWEEN     = 5000;  // pause before next loop
 
       function typeText(el, text, perChar, cb) {
         let i = 0;
         const id = setInterval(() => {
-          el.textContent += text[i];
-          i++;
+          el.textContent += text[i++];
           if (i >= text.length) { clearInterval(id); if (cb) cb(); }
         }, perChar);
       }
 
-      function runAnim() {
-        overlay.classList.add('visible');
-
-        setTimeout(() => {
-          typeText(inputEl, CMD, DELAY_PER_CH, () => {
-            // hide cursor after typing
-            cursorEl.style.display = 'none';
-            setTimeout(() => {
-              row2.classList.add('show');
-              typeText(congratsEl, CONGRATS, DELAY_CONGRATS_CH, () => {
-                setTimeout(() => {
-                  overlay.style.transition = 'opacity 0.8s ease';
-                  overlay.style.opacity = '0';
-                  setTimeout(() => overlay.remove(), 800);
-                }, DELAY_HIDE);
-              });
-            }, DELAY_SUCCESS);
-          });
-        }, DELAY_START);
+      function reset() {
+        inputEl.textContent    = '';
+        congratsEl.textContent = '';
+        cursorEl.style.display = '';
+        row2.classList.remove('show');
+        overlay.style.transition = '';
+        overlay.style.opacity    = '';
+        overlay.classList.remove('visible');
       }
 
-      // Start after page fully loads
+      function runAnim() {
+        reset();
+        // small tick so CSS transition picks up opacity change
+        requestAnimationFrame(() => requestAnimationFrame(() => {
+          overlay.classList.add('visible');
+          setTimeout(() => {
+            typeText(inputEl, CMD, DELAY_PER_CH, () => {
+              cursorEl.style.display = 'none';
+              setTimeout(() => {
+                row2.classList.add('show');
+                typeText(congratsEl, CONGRATS, DELAY_CONGRATS_CH, () => {
+                  setTimeout(() => {
+                    overlay.style.transition = 'opacity 0.8s ease';
+                    overlay.style.opacity = '0';
+                    // restart after fade + pause
+                    setTimeout(runAnim, 800 + DELAY_BETWEEN);
+                  }, DELAY_HOLD);
+                });
+              }, DELAY_SUCCESS);
+            });
+          }, DELAY_START);
+        }));
+      }
+
       window.addEventListener('load', () => setTimeout(runAnim, 800));
     })();
   </script>
