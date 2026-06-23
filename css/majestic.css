@@ -440,11 +440,8 @@ body {
 
 .socials a:hover { color: var(--pink); transform: translateY(-2px); }
 
-.mj-logo-link { display: block; margin-bottom: 4px; }
-.mj-logo-img { height: 22px; width: auto; }
-
 /* ============================================================
-   RIGHT COLUMN — character with real Majestic SVGs
+   RIGHT COLUMN — character on pink circle (like reference)
    ============================================================ */
 .right-col {
   position: relative;
@@ -453,67 +450,64 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
+  overflow: visible;
 }
 
-.char-wrap {
+/* The scene container defines the circle size */
+.char-scene {
   position: relative;
-  width: clamp(280px, 38vw, 520px);
-  height: clamp(280px, 38vw, 520px);
+  width: clamp(320px, 40vw, 540px);
+  height: clamp(320px, 40vw, 540px);
 }
 
-.char-circle-svg {
+/* Bloom glow behind circle */
+.char-glow {
+  position: absolute;
+  inset: -15%;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(232,24,93,0.45) 0%, transparent 65%);
+  filter: blur(50px);
+  z-index: 0;
+}
+
+/* Solid filled pink circle */
+.char-circle {
   position: absolute;
   inset: 0;
-  width: 100%;
-  height: 100%;
-  filter:
-    drop-shadow(0 0 50px rgba(232, 24, 93, 0.7))
-    drop-shadow(0 0 100px rgba(232, 24, 93, 0.3));
-}
-
-.char-dots-svg {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  opacity: 0.9;
-}
-
-.char-img {
-  position: absolute;
-  bottom: -8%;
-  left: 50%;
-  transform: translateX(-50%);
-  height: 118%;
-  width: auto;
-  object-fit: contain;
-  z-index: 3;
-  filter:
-    drop-shadow(-10px 0 30px rgba(0,0,0,0.9))
-    drop-shadow(0 30px 50px rgba(0,0,0,0.7));
-  /* fade out white background edges from AI-generated image */
-  mask-image: radial-gradient(
-    ellipse 78% 82% at 50% 52%,
-    black 45%,
-    transparent 80%
-  );
-  -webkit-mask-image: radial-gradient(
-    ellipse 78% 82% at 50% 52%,
-    black 45%,
-    transparent 80%
-  );
-}
-
-.sparkle {
-  position: absolute;
-  background: rgba(255,255,255,0.35);
-  clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+  border-radius: 50%;
+  background: radial-gradient(circle at 38% 32%, #e8185d 0%, #b5103f 45%, #7c0028 100%);
+  box-shadow:
+    0 0 0 3px rgba(232,24,93,0.3),
+    0 0 60px rgba(232,24,93,0.5),
+    0 0 120px rgba(232,24,93,0.2);
   z-index: 1;
 }
 
-.sparkle-1 { width: 22px; height: 22px; bottom: 16%; right: 10%; opacity: 0.6; animation: pulse-sparkle 3s ease-in-out infinite; }
-.sparkle-2 { width: 13px; height: 13px; bottom: 28%; right: 5%; opacity: 0.35; animation: pulse-sparkle 3s ease-in-out 1.5s infinite; }
-.sparkle-3 { width: 10px; height: 10px; top: 15%; right: 15%; opacity: 0.25; animation: pulse-sparkle 4s ease-in-out 0.8s infinite; }
+/* Dot pattern overlaid inside circle */
+.char-dots {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  overflow: hidden;
+  z-index: 2;
+  background-image: url('img/dots.svg');
+  background-size: 180%;
+  background-position: center;
+  opacity: 0.35;
+}
+
+/* Character image on top — mix-blend-mode:multiply removes the white background */
+.char-img {
+  position: absolute;
+  bottom: -12%;
+  left: 50%;
+  transform: translateX(-50%);
+  height: 140%;
+  width: auto;
+  object-fit: contain;
+  z-index: 3;
+  mix-blend-mode: multiply;
+}
 
 @keyframes pulse-sparkle {
   0%, 100% { opacity: 0.2; transform: scale(1) rotate(0deg); }
@@ -536,7 +530,7 @@ body {
   body { overflow: auto; }
   .page { flex-direction: column-reverse; min-height: auto; }
   .right-col { padding: 52px 24px 0; min-height: 320px; }
-  .char-wrap { width: 240px; height: 240px; }
+  .char-scene { width: 240px; height: 240px; }
   .left-col { padding: 36px 24px 52px; flex: none; min-height: auto; }
   .brand { font-size: 52px; letter-spacing: -2px; }
   .bonuses { flex-direction: column; gap: 14px; }
