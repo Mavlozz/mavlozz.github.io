@@ -353,6 +353,22 @@ ul { list-style: none; }
 .hero-avatar-wrap {
   position: relative;
   flex-shrink: 0;
+  perspective: 600px;
+  perspective-origin: center center;
+}
+
+.hero-avatar-scene {
+  position: relative;
+  width: 200px;
+  height: 200px;
+  transform-style: preserve-3d;
+  animation: avatar-float 4s ease-in-out infinite;
+  transition: transform 0.1s ease-out;
+}
+
+@keyframes avatar-float {
+  0%, 100% { transform: translateY(0px) rotateX(0deg); }
+  50%       { transform: translateY(-12px) rotateX(2deg); }
 }
 
 .hero-avatar {
@@ -362,9 +378,35 @@ ul { list-style: none; }
   border-radius: 50%;
   overflow: hidden;
   z-index: 2;
+  box-shadow:
+    0 0 0 2px rgba(139,92,246,0.4),
+    0 0 30px rgba(139,92,246,0.35),
+    0 0 60px rgba(139,92,246,0.15),
+    0 20px 40px rgba(0,0,0,0.5);
 }
 
 .hero-avatar img { width: 100%; height: 100%; object-fit: cover; }
+
+/* Hologram scan line */
+.hero-avatar::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: linear-gradient(to bottom,
+    transparent 0%, rgba(139,92,246,0.08) 48%,
+    rgba(192,132,252,0.18) 50%, rgba(139,92,246,0.08) 52%,
+    transparent 100%);
+  background-size: 100% 200%;
+  animation: scan-line 3s linear infinite;
+  z-index: 3;
+  pointer-events: none;
+}
+
+@keyframes scan-line {
+  0%   { background-position: 0% -100%; }
+  100% { background-position: 0% 200%; }
+}
 
 .avatar-placeholder {
   width: 100%;
@@ -379,24 +421,79 @@ ul { list-style: none; }
   color: rgba(255,255,255,0.6);
 }
 
+/* Orbital rings in 3D planes */
 .avatar-ring {
   position: absolute;
-  inset: -6px;
+  inset: -10px;
   border-radius: 50%;
-  border: 2px solid var(--accent);
-  animation: spin 8s linear infinite;
-  border-top-color: transparent;
-  border-right-color: transparent;
+  border: 2px solid transparent;
+  border-top: 2px solid #8b5cf6;
+  border-right: 2px solid rgba(139,92,246,0.3);
+  animation: orbit-z 5s linear infinite;
+  box-shadow: 0 0 12px rgba(139,92,246,0.5);
 }
 
 .avatar-ring-2 {
-  inset: -14px;
-  border-width: 1px;
-  border-color: var(--accent-light);
-  border-top-color: transparent;
-  border-left-color: transparent;
-  animation-duration: 12s;
-  animation-direction: reverse;
+  inset: -22px;
+  border: 1.5px solid transparent;
+  border-bottom: 1.5px solid #c084fc;
+  border-left: 1.5px solid rgba(192,132,252,0.25);
+  box-shadow: none;
+  animation: orbit-z 8s linear infinite reverse;
+}
+
+/* 3rd ring — tilted on X axis (horizontal orbit) */
+.avatar-ring-3 {
+  position: absolute;
+  inset: -18px;
+  border-radius: 50%;
+  border: 1.5px solid transparent;
+  border-top: 1.5px solid rgba(232,24,93,0.7);
+  border-bottom: 1.5px solid rgba(232,24,93,0.2);
+  animation: orbit-x 6s linear infinite;
+  transform: rotateX(70deg);
+}
+
+/* 4th ring — tilted on Y axis */
+.avatar-ring-4 {
+  position: absolute;
+  inset: -26px;
+  border-radius: 50%;
+  border: 1px solid transparent;
+  border-left: 1px solid rgba(139,92,246,0.5);
+  border-right: 1px solid rgba(139,92,246,0.15);
+  animation: orbit-y 10s linear infinite;
+  transform: rotateY(75deg);
+}
+
+@keyframes orbit-z {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+@keyframes orbit-x {
+  from { transform: rotateX(70deg) rotate(0deg); }
+  to   { transform: rotateX(70deg) rotate(360deg); }
+}
+
+@keyframes orbit-y {
+  from { transform: rotateY(75deg) rotate(0deg); }
+  to   { transform: rotateY(75deg) rotate(360deg); }
+}
+
+/* Glow pulse behind avatar */
+.avatar-glow {
+  position: absolute;
+  inset: -30px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(139,92,246,0.25) 0%, transparent 65%);
+  animation: avatar-pulse 4s ease-in-out infinite;
+  z-index: 0;
+}
+
+@keyframes avatar-pulse {
+  0%, 100% { opacity: 0.6; transform: scale(1); }
+  50%       { opacity: 1;   transform: scale(1.1); }
 }
 
 @keyframes spin { to { transform: rotate(360deg); } }

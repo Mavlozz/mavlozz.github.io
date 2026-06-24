@@ -196,6 +196,38 @@ initCustomCursor();
 initGrain();
 initMagnetic();
 loadDiscord();
+initAvatarTilt();
+
+// ============================================================
+//  AVATAR 3D MOUSE TILT
+// ============================================================
+function initAvatarTilt() {
+  const scene = document.getElementById('avatarScene');
+  if (!scene || window.matchMedia('(pointer: coarse)').matches) return;
+
+  let floatOffset = 0;
+  let targetX = 0, targetY = 0, curX = 0, curY = 0;
+  const MAX = 18;
+
+  document.addEventListener('mousemove', e => {
+    const cx = window.innerWidth  / 2;
+    const cy = window.innerHeight / 2;
+    targetX = ((e.clientY - cy) / cy) * -MAX;
+    targetY = ((e.clientX - cx) / cx) *  MAX;
+  });
+
+  // Smoothly interpolate + preserve float animation via JS
+  let t = 0;
+  (function tick() {
+    t += 0.016;
+    floatOffset = Math.sin(t * 0.8) * 10;
+    curX += (targetX - curX) * 0.08;
+    curY += (targetY - curY) * 0.08;
+    scene.style.transform =
+      `translateY(${floatOffset}px) rotateX(${curX}deg) rotateY(${curY}deg)`;
+    requestAnimationFrame(tick);
+  })();
+}
 
 // ============================================================
 //  SCROLL PROGRESS BAR
@@ -344,73 +376,116 @@ function initAmbient() {
   if (!btn) return;
   let audioCtx = null, nodes = [], playing = false;
 
+  function note(ctx, freq, time, dur, vol, type = 'square') {
+    const o = ctx.createOscillator();
+    const g = ctx.createGain();
+    const f = ctx.createBiquadFilter();
+    f.type = 'lowpass'; f.frequency.value = freq * 4;
+    o.type = type; o.frequency.value = freq;
+    g.gain.setValueAtTime(0, time);
+    g.gain.linearRampToValueAtTime(vol, time + 0.02);
+    g.gain.setValueAtTime(vol, time + dur - 0.05);
+    g.gain.linearRampToValueAtTime(0, time + dur);
+    o.connect(f); f.connect(g); g.connect(master);
+    o.start(time); o.stop(time + dur);
+    return o;
+  }
+
+  function kick(ctx, time) {
+    const o = ctx.createOscillator();
+    const g = ctx.createGain();
+    o.frequency.setValueAtTime(150, time);
+    o.frequency.exponentialRampToValueAtTime(40, time + 0.15);
+    g.gain.setValueAtTime(0.7, time);
+    g.gain.exponentialRampToValueAtTime(0.001, time + 0.25);
+    o.connect(g); g.connect(master);
+    o.start(time); o.stop(time + 0.3);
+  }
+
+  function hat(ctx, time, vol = 0.06) {
+    const buf = ctx.createBuffer(1, ctx.sampleRate * 0.05, ctx.sampleRate);
+    const d = buf.getChannelData(0);
+    for (let i = 0; i < d.length; i++) d[i] = Math.random() * 2 - 1;
+    const src = ctx.createBufferSource();
+    src.buffer = buf;
+    const hpf = ctx.createBiquadFilter();
+    hpf.type = 'highpass'; hpf.frequency.value = 7000;
+    const g = ctx.createGain();
+    g.gain.setValueAtTime(vol, time);
+    g.gain.exponentialRampToValueAtTime(0.001, time + 0.05);
+    src.connect(hpf); hpf.connect(g); g.connect(master);
+    src.start(time);
+  }
+
+  let master;
+
   function startAmbient() {
     if (playing) return;
     if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
     audioCtx.resume();
 
-    const master = audioCtx.createGain();
+    master = audioCtx.createGain();
     master.gain.setValueAtTime(0, audioCtx.currentTime);
-    master.gain.linearRampToValueAtTime(0.28, audioCtx.currentTime + 3);
+    master.gain.linearRampToValueAtTime(0.4, audioCtx.currentTime + 1.5);
     master.connect(audioCtx.destination);
 
-    // Deep filtered noise — dark atmospheric
-    const bufSize = audioCtx.sampleRate * 4;
-    const buf = audioCtx.createBuffer(1, bufSize, audioCtx.sampleRate);
-    const data = buf.getChannelData(0);
-    for (let i = 0; i < bufSize; i++) data[i] = Math.random() * 2 - 1;
-    const noise = audioCtx.createBufferSource();
-    noise.buffer = buf; noise.loop = true;
-    const nf = audioCtx.createBiquadFilter();
-    nf.type = 'bandpass'; nf.frequency.value = 120; nf.Q.value = 0.5;
-    const ng = audioCtx.createGain(); ng.gain.value = 0.04;
-    noise.connect(nf); nf.connect(ng); ng.connect(master);
-    noise.start();
+    // === MELODY — cyberpunk hook (A minor pentatonic) ===
+    // Notes: A4=440 C5=523 E5=659 G5=784 A5=880
+    const BPM = 128;
+    const S = 60 / BPM;          // 1 step = 1 beat
+    const mel = [440,440,523,440,0,659,523,440, 440,0,392,440,523,659,523,0];
+    let melInterval;
+    let step = 0;
+    function scheduleMel() {
+      if (!playing) { clearInterval(melInterval); return; }
+      const t = audioCtx.currentTime;
+      const f = mel[step % mel.length];
+      if (f) note(audioCtx, f, t, S * 0.7, 0.09, 'square');
+      step++;
+    }
+    melInterval = setInterval(scheduleMel, S * 1000);
+    scheduleMel();
 
-    // Cyberpunk-style synth pad — D minor chord (D2, A2, F3, D3)
-    const chordFreqs = [73.42, 110, 174.61, 146.83];
-    chordFreqs.forEach((freq, i) => {
-      const osc = audioCtx.createOscillator();
-      osc.type = ['sawtooth','sine','triangle','sine'][i];
-      osc.frequency.value = freq;
+    // === BASS LINE ===
+    const bassNotes = [110, 110, 130.81, 110, 98, 110, 130.81, 146.83];
+    let bassStep = 0, bassInterval;
+    function scheduleBass() {
+      if (!playing) { clearInterval(bassInterval); return; }
+      const t = audioCtx.currentTime;
+      note(audioCtx, bassNotes[bassStep % bassNotes.length], t, S * 1.8, 0.12, 'sawtooth');
+      bassStep++;
+    }
+    bassInterval = setInterval(scheduleBass, S * 2 * 1000);
+    scheduleBass();
 
-      // slight detune for richness
-      osc.detune.value = (i % 2 === 0 ? 1 : -1) * (3 + i * 2);
+    // === DRUMS ===
+    let beat = 0, drumInterval;
+    function scheduleDrum() {
+      if (!playing) { clearInterval(drumInterval); return; }
+      const t = audioCtx.currentTime;
+      if (beat % 4 === 0 || beat % 4 === 2) kick(audioCtx, t);
+      if (beat % 2 === 1) hat(audioCtx, t, 0.055);
+      if (beat % 8 === 5) hat(audioCtx, t + S * 0.5, 0.035);
+      beat++;
+    }
+    drumInterval = setInterval(scheduleDrum, S * 1000);
+    scheduleDrum();
 
-      // slow vibrato
-      const lfo = audioCtx.createOscillator();
-      lfo.frequency.value = 0.06 + i * 0.03;
-      const lfoG = audioCtx.createGain(); lfoG.gain.value = 0.8;
-      lfo.connect(lfoG); lfoG.connect(osc.frequency);
-
-      // filter per osc
-      const filt = audioCtx.createBiquadFilter();
-      filt.type = 'lowpass';
-      filt.frequency.value = 600 + i * 200;
-
+    // === PAD chord (background warmth) ===
+    [220, 261.63, 329.63].forEach((f, i) => {
+      const o = audioCtx.createOscillator();
       const g = audioCtx.createGain();
-      g.gain.value = [0.06, 0.04, 0.035, 0.05][i];
-
-      osc.connect(filt); filt.connect(g); g.connect(master);
-      osc.start(); lfo.start();
-      nodes.push(osc, lfo, filt);
+      const lp = audioCtx.createBiquadFilter();
+      lp.type = 'lowpass'; lp.frequency.value = 800;
+      o.type = 'sine'; o.frequency.value = f;
+      o.detune.value = i * 5;
+      g.gain.setValueAtTime(0, audioCtx.currentTime);
+      g.gain.linearRampToValueAtTime(0.04 - i * 0.008, audioCtx.currentTime + 2);
+      o.connect(lp); lp.connect(g); g.connect(master);
+      o.start(); nodes.push(o, g);
     });
 
-    // Subtle high pulse (rhythmic hi-hat feel ~120BPM)
-    const pulseInterval = setInterval(() => {
-      if (!playing) { clearInterval(pulseInterval); return; }
-      const o = audioCtx.createOscillator();
-      o.type = 'square'; o.frequency.value = 8000;
-      const g = audioCtx.createGain();
-      g.gain.setValueAtTime(0.012, audioCtx.currentTime);
-      g.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + 0.08);
-      const hpf = audioCtx.createBiquadFilter();
-      hpf.type = 'highpass'; hpf.frequency.value = 5000;
-      o.connect(hpf); hpf.connect(g); g.connect(master);
-      o.start(); o.stop(audioCtx.currentTime + 0.1);
-    }, 500);
-
-    nodes.push(noise, master);
+    nodes.push(master);
     playing = true;
     btn.classList.add('playing');
     btn.innerHTML = '<i class="fas fa-volume-up"></i>';
