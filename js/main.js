@@ -178,12 +178,20 @@ async function loadStats() {
     if (elVideos) elVideos.textContent = fmtNum(vids1 + vids2) + '+';
     if (abSubs1)  abSubs1.textContent  = fmtNum(subs1);
     if (abSubs2)  abSubs2.textContent  = fmtNum(subs2);
+    const t1 = document.getElementById('tipSubs1');
+    const t2 = document.getElementById('tipSubs2');
+    if (t1) t1.textContent = fmtNum(subs1) + ' подписчиков';
+    if (t2) t2.textContent = fmtNum(subs2) + ' подписчиков';
   } catch {
     if (elSubs1)  elSubs1.textContent  = '12K+';
     if (elSubs2)  elSubs2.textContent  = '5K+';
     if (elVideos) elVideos.textContent = '847+';
     if (abSubs1)  abSubs1.textContent  = '12K+';
     if (abSubs2)  abSubs2.textContent  = '5K+';
+    const t1 = document.getElementById('tipSubs1');
+    const t2 = document.getElementById('tipSubs2');
+    if (t1) t1.textContent = '12K+ подписчиков';
+    if (t2) t2.textContent = '5K+ подписчиков';
   }
 }
 
@@ -636,6 +644,8 @@ async function loadDiscord() {
     const online = d.approximate_presence_count || 0;
     const total  = d.approximate_member_count  || 0;
     el.innerHTML = `<span class="discord-dot"></span> ${online} онлайн · ${fmtNum(total)} всего`;
+    const tipD = document.getElementById('tipDiscord');
+    if (tipD) tipD.textContent = `${online} онлайн · ${fmtNum(total)} всего`;
   } catch {
     el.innerHTML = '<span class="discord-dot"></span> онлайн';
   }
@@ -652,14 +662,17 @@ async function checkLive() {
     const dot     = document.getElementById('liveDot');
     const navLive = document.getElementById('navLive');
     const btnText = document.getElementById('twitchBtnText');
+    const tipLive = document.getElementById('tipLive');
     if (live) {
       if (dot)     { dot.style.display = 'inline-block'; dot.title = `Идёт стрим: ${text}`; }
       if (navLive) navLive.style.display = 'inline-block';
       if (btnText) btnText.textContent = '🔴 В ЭФИРЕ — смотреть';
+      if (tipLive) tipLive.innerHTML = '<span style="color:#f87171">🔴 В ЭФИРЕ прямо сейчас!</span>';
     } else {
       if (dot)     dot.style.display = 'none';
       if (navLive) navLive.style.display = 'none';
       if (btnText) btnText.textContent = 'Смотреть стримы на Twitch';
+      if (tipLive) tipLive.textContent = 'Прямые стримы';
     }
   } catch {}
 }
