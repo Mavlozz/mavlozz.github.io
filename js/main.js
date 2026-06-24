@@ -155,10 +155,10 @@ async function loadVideos() {
 }
 
 async function loadStats() {
-  const BASE = 'https://api.socialcounts.org/youtube-live-subscriber-count/';
-  const elSubs   = document.getElementById('statSubs');
+  const BASE    = 'https://api.socialcounts.org/youtube-live-subscriber-count/';
+  const elSubs1  = document.getElementById('statSubs1');
+  const elSubs2  = document.getElementById('statVideos') ? document.getElementById('statSubs2') : null;
   const elVideos = document.getElementById('statVideos');
-  if (!elSubs) return;
 
   try {
     const [r1, r2] = await Promise.all([
@@ -170,10 +170,12 @@ async function loadStats() {
     const vids1 = r1?.counters?.api?.videoCount || 0;
     const vids2 = r2?.counters?.api?.videoCount || 0;
 
-    elSubs.textContent   = fmtNum(subs1 + subs2);
+    if (elSubs1)  elSubs1.textContent  = fmtNum(subs1);
+    if (elSubs2)  elSubs2.textContent  = fmtNum(subs2);
     if (elVideos) elVideos.textContent = fmtNum(vids1 + vids2) + '+';
   } catch {
-    if (elSubs)   elSubs.textContent   = '17K+';
+    if (elSubs1)  elSubs1.textContent  = '12K+';
+    if (elSubs2)  elSubs2.textContent  = '5K+';
     if (elVideos) elVideos.textContent = '847+';
   }
 }
