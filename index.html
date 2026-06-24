@@ -26,6 +26,11 @@
 
   <!-- SCROLL PROGRESS BAR -->
   <div class="scroll-progress" id="scrollProgress"></div>
+  <!-- GRAIN OVERLAY -->
+  <div class="grain-overlay" id="grainOverlay"></div>
+  <!-- CUSTOM CURSOR -->
+  <div class="cursor-dot" id="cursorDot"></div>
+  <div class="cursor-ring" id="cursorRing"></div>
 
   <!-- NAVBAR -->
   <nav class="navbar" id="navbar">
@@ -83,10 +88,10 @@
             </div>
           </div>
           <div class="hero-btns">
-            <a href="https://www.youtube.com/@Mavlo" target="_blank" rel="noopener" class="btn btn-primary">
+            <a href="https://www.youtube.com/@Mavlo" target="_blank" rel="noopener" class="btn btn-primary btn-magnetic">
               <i class="fab fa-youtube"></i> Подписаться
             </a>
-            <a href="#videos" class="btn btn-ghost">
+            <a href="#videos" class="btn btn-ghost btn-magnetic">
               <i class="fas fa-play"></i> Смотреть видео
             </a>
           </div>
@@ -322,7 +327,7 @@
           <div class="soc-icon"><i class="fab fa-discord"></i></div>
           <div class="soc-info">
             <span class="soc-name">Discord</span>
-            <span class="soc-handle">Сервер MAVLO</span>
+            <span class="soc-handle">Сервер MAVLO · <span id="discordOnline"><span class="discord-dot"></span> загружаем…</span></span>
           </div>
           <i class="fas fa-chevron-right soc-arrow"></i>
         </a>

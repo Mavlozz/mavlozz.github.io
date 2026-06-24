@@ -192,6 +192,10 @@ initGlitch();
 initRotatingText();
 initKonami();
 initAmbient();
+initCustomCursor();
+initGrain();
+initMagnetic();
+loadDiscord();
 
 // ============================================================
 //  SCROLL PROGRESS BAR
@@ -340,60 +344,218 @@ function initAmbient() {
   if (!btn) return;
   let audioCtx = null, nodes = [], playing = false;
 
-  btn.addEventListener('click', () => {
-    if (!playing) {
-      if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-      audioCtx.resume();
+  function startAmbient() {
+    if (playing) return;
+    if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    audioCtx.resume();
 
-      const master = audioCtx.createGain();
-      master.gain.setValueAtTime(0, audioCtx.currentTime);
-      master.gain.linearRampToValueAtTime(0.35, audioCtx.currentTime + 2.5);
-      master.connect(audioCtx.destination);
+    const master = audioCtx.createGain();
+    master.gain.setValueAtTime(0, audioCtx.currentTime);
+    master.gain.linearRampToValueAtTime(0.28, audioCtx.currentTime + 3);
+    master.connect(audioCtx.destination);
 
-      // Filtered noise — atmospheric hum
-      const bufSize = audioCtx.sampleRate * 3;
-      const buf = audioCtx.createBuffer(1, bufSize, audioCtx.sampleRate);
-      const data = buf.getChannelData(0);
-      for (let i = 0; i < bufSize; i++) data[i] = Math.random() * 2 - 1;
-      const noise = audioCtx.createBufferSource();
-      noise.buffer = buf; noise.loop = true;
-      const nf = audioCtx.createBiquadFilter();
-      nf.type = 'lowpass'; nf.frequency.value = 160;
-      const ng = audioCtx.createGain(); ng.gain.value = 0.05;
-      noise.connect(nf); nf.connect(ng); ng.connect(master);
-      noise.start();
+    // Deep filtered noise — dark atmospheric
+    const bufSize = audioCtx.sampleRate * 4;
+    const buf = audioCtx.createBuffer(1, bufSize, audioCtx.sampleRate);
+    const data = buf.getChannelData(0);
+    for (let i = 0; i < bufSize; i++) data[i] = Math.random() * 2 - 1;
+    const noise = audioCtx.createBufferSource();
+    noise.buffer = buf; noise.loop = true;
+    const nf = audioCtx.createBiquadFilter();
+    nf.type = 'bandpass'; nf.frequency.value = 120; nf.Q.value = 0.5;
+    const ng = audioCtx.createGain(); ng.gain.value = 0.04;
+    noise.connect(nf); nf.connect(ng); ng.connect(master);
+    noise.start();
 
-      // Drone chord (A minor feel)
-      [110, 146.83, 164.81, 220].forEach((freq, i) => {
-        const osc = audioCtx.createOscillator();
-        osc.type = i % 2 === 0 ? 'sine' : 'triangle';
-        osc.frequency.value = freq;
-        const lfo = audioCtx.createOscillator();
-        lfo.frequency.value = 0.08 + i * 0.04;
-        const lfoG = audioCtx.createGain(); lfoG.gain.value = 0.5;
-        lfo.connect(lfoG); lfoG.connect(osc.frequency);
-        const g = audioCtx.createGain(); g.gain.value = 0.055 - i * 0.009;
-        osc.connect(g); g.connect(master);
-        osc.start(); lfo.start();
-        nodes.push(osc, lfo);
-      });
+    // Cyberpunk-style synth pad — D minor chord (D2, A2, F3, D3)
+    const chordFreqs = [73.42, 110, 174.61, 146.83];
+    chordFreqs.forEach((freq, i) => {
+      const osc = audioCtx.createOscillator();
+      osc.type = ['sawtooth','sine','triangle','sine'][i];
+      osc.frequency.value = freq;
 
-      nodes.push(noise, master);
-      playing = true;
-      btn.classList.add('playing');
-      btn.innerHTML = '<i class="fas fa-volume-up"></i>';
-    } else {
-      const g = nodes.find(n => n.gain);
-      if (g) { g.gain.linearRampToValueAtTime(0, audioCtx.currentTime + 1); }
-      setTimeout(() => {
-        nodes.forEach(n => { try { n.stop ? n.stop() : n.disconnect(); } catch {} });
-        nodes = [];
-      }, 1100);
-      playing = false;
-      btn.classList.remove('playing');
-      btn.innerHTML = '<i class="fas fa-music"></i>';
+      // slight detune for richness
+      osc.detune.value = (i % 2 === 0 ? 1 : -1) * (3 + i * 2);
+
+      // slow vibrato
+      const lfo = audioCtx.createOscillator();
+      lfo.frequency.value = 0.06 + i * 0.03;
+      const lfoG = audioCtx.createGain(); lfoG.gain.value = 0.8;
+      lfo.connect(lfoG); lfoG.connect(osc.frequency);
+
+      // filter per osc
+      const filt = audioCtx.createBiquadFilter();
+      filt.type = 'lowpass';
+      filt.frequency.value = 600 + i * 200;
+
+      const g = audioCtx.createGain();
+      g.gain.value = [0.06, 0.04, 0.035, 0.05][i];
+
+      osc.connect(filt); filt.connect(g); g.connect(master);
+      osc.start(); lfo.start();
+      nodes.push(osc, lfo, filt);
+    });
+
+    // Subtle high pulse (rhythmic hi-hat feel ~120BPM)
+    const pulseInterval = setInterval(() => {
+      if (!playing) { clearInterval(pulseInterval); return; }
+      const o = audioCtx.createOscillator();
+      o.type = 'square'; o.frequency.value = 8000;
+      const g = audioCtx.createGain();
+      g.gain.setValueAtTime(0.012, audioCtx.currentTime);
+      g.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + 0.08);
+      const hpf = audioCtx.createBiquadFilter();
+      hpf.type = 'highpass'; hpf.frequency.value = 5000;
+      o.connect(hpf); hpf.connect(g); g.connect(master);
+      o.start(); o.stop(audioCtx.currentTime + 0.1);
+    }, 500);
+
+    nodes.push(noise, master);
+    playing = true;
+    btn.classList.add('playing');
+    btn.innerHTML = '<i class="fas fa-volume-up"></i>';
+  }
+
+  function stopAmbient() {
+    const masterNode = nodes[nodes.length - 1];
+    if (masterNode && masterNode.gain) {
+      masterNode.gain.linearRampToValueAtTime(0, audioCtx.currentTime + 1.2);
+    }
+    setTimeout(() => {
+      nodes.forEach(n => { try { n.stop ? n.stop() : n.disconnect(); } catch {} });
+      nodes = [];
+    }, 1300);
+    playing = false;
+    btn.classList.remove('playing');
+    btn.innerHTML = '<i class="fas fa-music"></i>';
+  }
+
+  btn.addEventListener('click', () => playing ? stopAmbient() : startAmbient());
+
+  // Auto-start on first user interaction anywhere
+  const autoStart = () => {
+    startAmbient();
+    document.removeEventListener('click',    autoStart);
+    document.removeEventListener('keydown',  autoStart);
+    document.removeEventListener('touchend', autoStart);
+  };
+  document.addEventListener('click',    autoStart);
+  document.addEventListener('keydown',  autoStart);
+  document.addEventListener('touchend', autoStart);
+}
+
+// ============================================================
+//  CUSTOM CURSOR
+// ============================================================
+function initCustomCursor() {
+  if (window.matchMedia('(pointer: coarse)').matches) return; // skip touch devices
+  const dot  = document.getElementById('cursorDot');
+  const ring = document.getElementById('cursorRing');
+  if (!dot || !ring) return;
+
+  document.body.classList.add('custom-cursor');
+
+  let mx = -100, my = -100, rx = -100, ry = -100;
+  let lastSpark = 0;
+
+  document.addEventListener('mousemove', e => {
+    mx = e.clientX; my = e.clientY;
+    dot.style.transform = `translate(${mx}px,${my}px)`;
+    // spark trail
+    const now = Date.now();
+    if (now - lastSpark > 45) {
+      lastSpark = now;
+      spawnSpark(mx, my);
     }
   });
+
+  // ring follows with lag
+  (function animRing() {
+    rx += (mx - rx) * 0.13;
+    ry += (my - ry) * 0.13;
+    ring.style.transform = `translate(${rx}px,${ry}px)`;
+    requestAnimationFrame(animRing);
+  })();
+
+  // scale ring on hover
+  document.querySelectorAll('a,button,.btn,.soc-card,.video-card').forEach(el => {
+    el.addEventListener('mouseenter', () => ring.classList.add('hover'));
+    el.addEventListener('mouseleave', () => ring.classList.remove('hover'));
+  });
+}
+
+function spawnSpark(x, y) {
+  const s = document.createElement('div');
+  s.className = 'cursor-spark';
+  const angle = Math.random() * Math.PI * 2;
+  const dist  = 10 + Math.random() * 18;
+  s.style.cssText = `left:${x}px;top:${y}px;`
+    + `--dx:${(Math.cos(angle)*dist).toFixed(1)}px;`
+    + `--dy:${(Math.sin(angle)*dist).toFixed(1)}px;`;
+  document.body.appendChild(s);
+  setTimeout(() => s.remove(), 600);
+}
+
+// ============================================================
+//  GRAIN OVERLAY
+// ============================================================
+function initGrain() {
+  const el = document.getElementById('grainOverlay');
+  if (!el) return;
+  const SIZE = 180;
+  const canvas = document.createElement('canvas');
+  canvas.width = canvas.height = SIZE;
+  const ctx = canvas.getContext('2d');
+
+  function frame() {
+    const id = ctx.createImageData(SIZE, SIZE);
+    const d  = id.data;
+    for (let i = 0; i < d.length; i += 4) {
+      const v = (Math.random() * 255) | 0;
+      d[i] = d[i+1] = d[i+2] = v; d[i+3] = 255;
+    }
+    ctx.putImageData(id, 0, 0);
+    el.style.backgroundImage = `url(${canvas.toDataURL()})`;
+    setTimeout(() => requestAnimationFrame(frame), 80);
+  }
+  frame();
+}
+
+// ============================================================
+//  MAGNETIC BUTTONS
+// ============================================================
+function initMagnetic() {
+  document.querySelectorAll('.btn-magnetic').forEach(btn => {
+    btn.addEventListener('mousemove', e => {
+      const r  = btn.getBoundingClientRect();
+      const dx = e.clientX - (r.left + r.width  / 2);
+      const dy = e.clientY - (r.top  + r.height / 2);
+      btn.style.transform = `translate(${dx * 0.28}px, ${dy * 0.38}px) scale(1.04)`;
+    });
+    btn.addEventListener('mouseleave', () => {
+      btn.style.transition = 'transform 0.55s cubic-bezier(.23,1,.32,1)';
+      btn.style.transform  = '';
+      setTimeout(() => btn.style.transition = '', 600);
+    });
+    btn.addEventListener('mouseenter', () => { btn.style.transition = 'none'; });
+  });
+}
+
+// ============================================================
+//  DISCORD ONLINE COUNT
+// ============================================================
+async function loadDiscord() {
+  const el = document.getElementById('discordOnline');
+  if (!el) return;
+  try {
+    const r = await fetch('https://discord.com/api/v9/invites/BHVQsqj?with_counts=true');
+    const d = await r.json();
+    const online = d.approximate_presence_count || 0;
+    const total  = d.approximate_member_count  || 0;
+    el.innerHTML = `<span class="discord-dot"></span> ${online} онлайн · ${fmtNum(total)} всего`;
+  } catch {
+    el.innerHTML = '<span class="discord-dot"></span> онлайн';
+  }
 }
 
 // ============================================================
