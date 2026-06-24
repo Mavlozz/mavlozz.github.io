@@ -540,14 +540,13 @@ body {
   align-items: center;
   justify-content: center;
   z-index: 1000;
-  pointer-events: none;
+  pointer-events: none !important;
   opacity: 0;
   transition: opacity 0.5s ease;
 }
 
 .promo-anim-overlay.visible {
   opacity: 1;
-  pointer-events: auto;
 }
 
 .promo-anim-box {
