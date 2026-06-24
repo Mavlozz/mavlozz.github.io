@@ -39,6 +39,14 @@ body {
   overflow: hidden;
 }
 
+/* All decorative layers never intercept clicks */
+.page::before, .page::after,
+.char-scene, .char-glow, .char-circle, .char-dots, .char-img,
+.right-col,
+.promo-anim-overlay, .promo-anim-box {
+  pointer-events: none !important;
+}
+
 /* cinematic dark background with depth */
 .page::before {
   content: '';
