@@ -83,7 +83,7 @@ function buildVideoCard(item, channelLabel) {
   const vidId = videoIdFromUrl(item.link);
   if (!vidId) return null;
   const isShort = item.link.includes('/shorts/');
-  const thumb = `https://img.youtube.com/vi/${vidId}/mqdefault.jpg`;
+  const thumb = `https://img.youtube.com/vi/${vidId}/maxresdefault.jpg`;
   const href  = isShort
     ? `https://youtube.com/shorts/${vidId}`
     : `https://youtube.com/watch?v=${vidId}`;
@@ -94,7 +94,7 @@ function buildVideoCard(item, channelLabel) {
   card.innerHTML = `
     <a href="${href}" target="_blank" rel="noopener" class="video-thumb">
       <img src="${thumb}" alt="${item.title.replace(/"/g,'&quot;')}" loading="lazy"
-           onerror="this.src='https://img.youtube.com/vi/${vidId}/hqdefault.jpg'">
+           onerror="this.src=this.src.includes('maxres')?'https://img.youtube.com/vi/${vidId}/hqdefault.jpg':'https://img.youtube.com/vi/${vidId}/mqdefault.jpg'">
       <div class="video-overlay"><i class="fas fa-play"></i></div>
       ${isShort ? '<span class="video-dur" style="background:var(--accent)">SHORT</span>' : ''}
     </a>
@@ -249,7 +249,7 @@ async function loadClips() {
   for (const { item, label } of top) {
     const vidId = videoIdFromUrl(item.link);
     if (!vidId) continue;
-    const thumb = `https://img.youtube.com/vi/${vidId}/mqdefault.jpg`;
+    const thumb = `https://img.youtube.com/vi/${vidId}/maxresdefault.jpg`;
     const href  = `https://youtube.com/shorts/${vidId}`;
     const card  = document.createElement('a');
     card.className = 'clip-card';
@@ -259,7 +259,7 @@ async function loadClips() {
     card.innerHTML = `
       <div class="clip-thumb">
         <img src="${thumb}" alt="${item.title.replace(/"/g,'&quot;')}" loading="lazy"
-             onerror="this.src='https://img.youtube.com/vi/${vidId}/hqdefault.jpg'">
+             onerror="this.src=this.src.includes('maxres')?'https://img.youtube.com/vi/${vidId}/hqdefault.jpg':'https://img.youtube.com/vi/${vidId}/mqdefault.jpg'">
         <div class="clip-overlay"><i class="fab fa-youtube"></i></div>
         <span class="clip-badge">SHORT</span>
       </div>
