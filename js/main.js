@@ -156,10 +156,12 @@ async function loadVideos() {
 }
 
 async function loadStats() {
-  const BASE    = 'https://api.socialcounts.org/youtube-live-subscriber-count/';
+  const BASE     = 'https://api.socialcounts.org/youtube-live-subscriber-count/';
   const elSubs1  = document.getElementById('statSubs1');
-  const elSubs2  = document.getElementById('statVideos') ? document.getElementById('statSubs2') : null;
+  const elSubs2  = document.getElementById('statSubs2');
   const elVideos = document.getElementById('statVideos');
+  const abSubs1  = document.getElementById('abSubs1');
+  const abSubs2  = document.getElementById('abSubs2');
 
   try {
     const [r1, r2] = await Promise.all([
@@ -174,13 +176,18 @@ async function loadStats() {
     if (elSubs1)  elSubs1.textContent  = fmtNum(subs1);
     if (elSubs2)  elSubs2.textContent  = fmtNum(subs2);
     if (elVideos) elVideos.textContent = fmtNum(vids1 + vids2) + '+';
+    if (abSubs1)  abSubs1.textContent  = fmtNum(subs1);
+    if (abSubs2)  abSubs2.textContent  = fmtNum(subs2);
   } catch {
     if (elSubs1)  elSubs1.textContent  = '12K+';
     if (elSubs2)  elSubs2.textContent  = '5K+';
     if (elVideos) elVideos.textContent = '847+';
+    if (abSubs1)  abSubs1.textContent  = '12K+';
+    if (abSubs2)  abSubs2.textContent  = '5K+';
   }
 }
 
+initPreloader();
 loadVideos();
 loadStats();
 loadClips();
@@ -197,6 +204,9 @@ initGrain();
 initMagnetic();
 loadDiscord();
 initAvatarTilt();
+initAvatarFlip();
+initTyping();
+initUISounds();
 
 // ============================================================
 //  AVATAR 3D MOUSE TILT
@@ -523,7 +533,7 @@ function initAmbient() {
 //  CUSTOM CURSOR
 // ============================================================
 function initCustomCursor() {
-  if (window.matchMedia('(pointer: coarse)').matches) return; // skip touch devices
+  if (window.matchMedia('(pointer: coarse)').matches) return;
   const dot  = document.getElementById('cursorDot');
   const ring = document.getElementById('cursorRing');
   if (!dot || !ring) return;
@@ -531,31 +541,29 @@ function initCustomCursor() {
   document.body.classList.add('custom-cursor');
 
   let mx = -100, my = -100, rx = -100, ry = -100;
-  let lastSpark = 0;
 
   document.addEventListener('mousemove', e => {
     mx = e.clientX; my = e.clientY;
     dot.style.transform = `translate(${mx}px,${my}px)`;
-    // spark trail
-    const now = Date.now();
-    if (now - lastSpark > 45) {
-      lastSpark = now;
-      spawnSpark(mx, my);
-    }
   });
 
-  // ring follows with lag
+  // ring follows faster (0.2 vs old 0.13)
   (function animRing() {
-    rx += (mx - rx) * 0.13;
-    ry += (my - ry) * 0.13;
+    rx += (mx - rx) * 0.2;
+    ry += (my - ry) * 0.2;
     ring.style.transform = `translate(${rx}px,${ry}px)`;
     requestAnimationFrame(animRing);
   })();
 
-  // scale ring on hover
+  // ring grows on hover
   document.querySelectorAll('a,button,.btn,.soc-card,.video-card').forEach(el => {
     el.addEventListener('mouseenter', () => ring.classList.add('hover'));
     el.addEventListener('mouseleave', () => ring.classList.remove('hover'));
+  });
+
+  // sparks ONLY on click — 8 sparks burst
+  document.addEventListener('click', e => {
+    for (let i = 0; i < 8; i++) spawnSpark(e.clientX, e.clientY);
   });
 }
 
@@ -654,6 +662,121 @@ async function checkLive() {
       if (btnText) btnText.textContent = 'Смотреть стримы на Twitch';
     }
   } catch {}
+}
+
+// ============================================================
+//  PRELOADER
+// ============================================================
+function initPreloader() {
+  const pl  = document.getElementById('preloader');
+  const bar = document.getElementById('plBar');
+  if (!pl) return;
+
+  // start bar fill after browser paints
+  requestAnimationFrame(() => requestAnimationFrame(() => {
+    bar.style.width = '100%';
+  }));
+
+  setTimeout(() => {
+    pl.classList.add('done');
+    setTimeout(() => pl.remove(), 700);
+  }, 2000);
+}
+
+// ============================================================
+//  TYPING ANIMATION (hero description)
+// ============================================================
+function initTyping() {
+  const el = document.querySelector('.hero-desc');
+  if (!el) return;
+
+  const lines = [
+    'Игры, стримы, разборы и настоящие эмоции.',
+    'Подписывайся — пропустишь самое интересное.'
+  ];
+
+  el.innerHTML = '<span class="typing-text"></span><span class="typing-cursor">|</span>';
+  const textEl = el.querySelector('.typing-text');
+
+  let lineIdx = 0, charIdx = 0;
+
+  function typeNext() {
+    if (lineIdx >= lines.length) return;
+    const line = lines[lineIdx];
+    if (charIdx <= line.length) {
+      const typed = lines.slice(0, lineIdx).join('\n') + line.slice(0, charIdx);
+      textEl.innerHTML = typed.replace(/\n/g, '<br>');
+      charIdx++;
+      setTimeout(typeNext, 32 + Math.random() * 22);
+    } else {
+      lineIdx++;
+      charIdx = 0;
+      setTimeout(typeNext, 180);
+    }
+  }
+
+  // start after preloader finishes (2.2s)
+  setTimeout(typeNext, 2250);
+}
+
+// ============================================================
+//  AVATAR FLIP CARD
+// ============================================================
+function initAvatarFlip() {
+  const card = document.getElementById('avatarCard');
+  if (!card) return;
+  card.addEventListener('click', () => card.classList.toggle('flipped'));
+}
+
+// ============================================================
+//  UI SOUNDS (subtle — click & hover)
+// ============================================================
+function initUISounds() {
+  let sCtx = null;
+  const getCtx = () => {
+    if (!sCtx) sCtx = new (window.AudioContext || window.webkitAudioContext)();
+    sCtx.resume();
+    return sCtx;
+  };
+
+  function playClick() {
+    try {
+      const c = getCtx();
+      const o = c.createOscillator();
+      const g = c.createGain();
+      o.type = 'sine';
+      o.frequency.setValueAtTime(1100, c.currentTime);
+      o.frequency.exponentialRampToValueAtTime(550, c.currentTime + 0.06);
+      g.gain.setValueAtTime(0.055, c.currentTime);
+      g.gain.exponentialRampToValueAtTime(0.001, c.currentTime + 0.09);
+      o.connect(g); g.connect(c.destination);
+      o.start(); o.stop(c.currentTime + 0.1);
+    } catch {}
+  }
+
+  function playHover() {
+    try {
+      const c = getCtx();
+      const buf = c.createBuffer(1, Math.floor(c.sampleRate * 0.07), c.sampleRate);
+      const d = buf.getChannelData(0);
+      for (let i = 0; i < d.length; i++) d[i] = (Math.random() * 2 - 1) * (1 - i / d.length);
+      const src = c.createBufferSource(); src.buffer = buf;
+      const hpf = c.createBiquadFilter(); hpf.type = 'highpass'; hpf.frequency.value = 4500;
+      const g = c.createGain(); g.gain.value = 0.022;
+      src.connect(hpf); hpf.connect(g); g.connect(c.destination);
+      src.start();
+    } catch {}
+  }
+
+  // attach after DOM is ready
+  function attach() {
+    document.querySelectorAll('.btn, .nav-links a, .hero-soc, .soc-card, .play-btn').forEach(el => {
+      el.addEventListener('click', playClick, { once: false });
+      el.addEventListener('mouseenter', playHover, { once: false });
+    });
+  }
+  // small delay so dynamic content (cards) is loaded
+  setTimeout(attach, 3000);
 }
 
 // ============================================================

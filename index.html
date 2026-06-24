@@ -24,6 +24,15 @@
 </head>
 <body>
 
+  <!-- PRELOADER -->
+  <div id="preloader">
+    <div class="pl-inner">
+      <div class="pl-logo">M<span>AVLO</span></div>
+      <div class="pl-tag">// GAMING CHANNEL</div>
+      <div class="pl-bar-track"><div class="pl-bar" id="plBar"></div></div>
+    </div>
+  </div>
+
   <!-- SCROLL PROGRESS BAR -->
   <div class="scroll-progress" id="scrollProgress"></div>
   <!-- GRAIN OVERLAY -->
@@ -60,13 +69,29 @@
         <div class="hero-avatar-wrap" id="avatarWrap">
           <div class="avatar-glow"></div>
           <div class="hero-avatar-scene" id="avatarScene">
-            <div class="hero-avatar">
-              <img src="img/avatar.png" alt="MAVLO">
+            <!-- Flip card: click to see stats on back -->
+            <div class="avatar-card" id="avatarCard" title="Нажми чтобы перевернуть">
+              <div class="avatar-face avatar-front">
+                <div class="hero-avatar">
+                  <img src="img/avatar.png" alt="MAVLO">
+                </div>
+              </div>
+              <div class="avatar-face avatar-back">
+                <div class="avatar-back-inner">
+                  <div class="ab-name">MAVLO</div>
+                  <div class="ab-stats">
+                    <div class="ab-stat"><span id="abSubs1">…</span><small>@Mavlo</small></div>
+                    <div class="ab-stat"><span id="abSubs2">…</span><small>@MMavlo</small></div>
+                  </div>
+                  <div class="ab-quote">"Игры — это<br>целая жизнь"</div>
+                  <div class="ab-hint">↻ назад</div>
+                </div>
+              </div>
             </div>
-            <div class="avatar-ring"></div>
-            <div class="avatar-ring avatar-ring-2"></div>
-            <div class="avatar-ring avatar-ring-3"></div>
-            <div class="avatar-ring avatar-ring-4"></div>
+            <div class="avatar-ring" style="pointer-events:none"></div>
+            <div class="avatar-ring avatar-ring-2" style="pointer-events:none"></div>
+            <div class="avatar-ring avatar-ring-3" style="pointer-events:none"></div>
+            <div class="avatar-ring avatar-ring-4" style="pointer-events:none"></div>
           </div>
         </div>
         <div class="hero-content">

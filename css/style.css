@@ -1406,6 +1406,208 @@ body.custom-cursor, body.custom-cursor * { cursor: none !important; }
 }
 
 /* ============================================================
+   PRELOADER
+   ============================================================ */
+#preloader {
+  position: fixed;
+  inset: 0;
+  background: #06060d;
+  z-index: 999999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.65s ease, transform 0.65s ease;
+}
+
+#preloader.done {
+  opacity: 0;
+  transform: scale(1.05);
+  pointer-events: none;
+}
+
+.pl-inner { text-align: center; }
+
+.pl-logo {
+  font-family: 'Orbitron', sans-serif;
+  font-size: clamp(54px, 12vw, 96px);
+  font-weight: 900;
+  color: #fff;
+  line-height: 1;
+  letter-spacing: -3px;
+  text-shadow: 0 0 60px rgba(139,92,246,0.5);
+  animation: pl-drop 0.55s cubic-bezier(.23,1,.32,1) both;
+}
+
+.pl-logo span { color: #8b5cf6; }
+
+.pl-tag {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 11px;
+  letter-spacing: 4px;
+  color: rgba(139,92,246,0.6);
+  margin-top: 10px;
+  animation: pl-fade 0.5s ease 0.35s both;
+}
+
+.pl-bar-track {
+  width: 180px;
+  height: 2px;
+  background: rgba(255,255,255,0.07);
+  border-radius: 2px;
+  margin: 28px auto 0;
+  overflow: hidden;
+  animation: pl-fade 0.5s ease 0.3s both;
+}
+
+.pl-bar {
+  height: 100%;
+  width: 0;
+  background: linear-gradient(to right, #6d28d9, #8b5cf6, #c084fc);
+  border-radius: 2px;
+  box-shadow: 0 0 12px rgba(139,92,246,0.9);
+  transition: width 1.5s cubic-bezier(.4,0,.2,1);
+}
+
+@keyframes pl-drop {
+  from { opacity: 0; transform: translateY(-28px) scale(0.88); }
+  to   { opacity: 1; transform: none; }
+}
+
+@keyframes pl-fade {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* ============================================================
+   AVATAR FLIP CARD
+   ============================================================ */
+.avatar-card {
+  position: relative;
+  width: 200px;
+  height: 200px;
+  transform-style: preserve-3d;
+  transition: transform 0.72s cubic-bezier(.4,0,.2,1);
+  cursor: pointer;
+  z-index: 2;
+}
+
+.avatar-card.flipped { transform: rotateY(180deg); }
+
+.avatar-face {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+.avatar-front { overflow: visible; }
+
+.avatar-back {
+  transform: rotateY(180deg);
+  background: linear-gradient(135deg, #140430 0%, #0b0b16 100%);
+  border: 2px solid rgba(139,92,246,0.55);
+  box-shadow: inset 0 0 40px rgba(139,92,246,0.12), 0 0 30px rgba(139,92,246,0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.avatar-back-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 7px;
+  padding: 10px;
+  text-align: center;
+}
+
+.ab-name {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 17px;
+  font-weight: 900;
+  color: #fff;
+  letter-spacing: 2px;
+  text-shadow: 0 0 18px rgba(139,92,246,0.9);
+}
+
+.ab-stats { display: flex; gap: 14px; }
+
+.ab-stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1px;
+}
+
+.ab-stat span {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  color: #c084fc;
+}
+
+.ab-stat small {
+  font-size: 9px;
+  color: rgba(255,255,255,0.35);
+  letter-spacing: 0.5px;
+}
+
+.ab-quote {
+  font-size: 10px;
+  color: rgba(255,255,255,0.45);
+  font-style: italic;
+  line-height: 1.5;
+}
+
+.ab-hint {
+  font-size: 9px;
+  color: rgba(139,92,246,0.45);
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  margin-top: 2px;
+}
+
+/* ============================================================
+   TYPING ANIMATION
+   ============================================================ */
+.typing-cursor {
+  display: inline;
+  color: #8b5cf6;
+  font-weight: 300;
+  animation: t-blink 1s step-end infinite;
+}
+
+@keyframes t-blink {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0; }
+}
+
+/* Cursor tweaks — smaller, faster ring */
+.cursor-dot {
+  width: 6px !important;
+  height: 6px !important;
+  background: #a78bfa !important;
+}
+
+.cursor-ring {
+  width: 26px !important;
+  height: 26px !important;
+  border: 1px solid rgba(139,92,246,0.4) !important;
+}
+
+.cursor-ring.hover {
+  width: 42px !important;
+  height: 42px !important;
+}
+
+/* Mobile flip card size */
+@media (max-width: 768px) {
+  .avatar-card { width: 160px; height: 160px; }
+}
+
+/* ============================================================
    RESPONSIVE
    ============================================================ */
 @media (max-width: 1024px) {
