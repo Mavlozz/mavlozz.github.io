@@ -152,6 +152,7 @@ async function loadVideos() {
     if (card) { grid.appendChild(card); }
   }
   observeFade();
+  initTilt();
 }
 
 async function loadStats() {
@@ -185,6 +186,215 @@ loadStats();
 loadClips();
 checkLive();
 setInterval(checkLive, 60000);
+initScrollProgress();
+initParticles();
+initGlitch();
+initRotatingText();
+initKonami();
+initAmbient();
+
+// ============================================================
+//  SCROLL PROGRESS BAR
+// ============================================================
+function initScrollProgress() {
+  const bar = document.getElementById('scrollProgress');
+  if (!bar) return;
+  window.addEventListener('scroll', () => {
+    const pct = window.scrollY / (document.body.scrollHeight - window.innerHeight) * 100;
+    bar.style.width = pct + '%';
+  }, { passive: true });
+}
+
+// ============================================================
+//  PARTICLES
+// ============================================================
+function initParticles() {
+  const canvas = document.getElementById('particlesCanvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+
+  function resize() {
+    canvas.width  = canvas.offsetWidth;
+    canvas.height = canvas.offsetHeight;
+  }
+  resize();
+  window.addEventListener('resize', resize, { passive: true });
+
+  const pts = Array.from({ length: 80 }, () => ({
+    x:  Math.random(),
+    y:  Math.random(),
+    r:  Math.random() * 1.8 + 0.4,
+    vx: (Math.random() - 0.5) * 0.0003,
+    vy: (Math.random() - 0.5) * 0.0003,
+    a:  Math.random(),
+    da: (Math.random() - 0.5) * 0.006,
+  }));
+
+  function draw() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    pts.forEach(p => {
+      p.x += p.vx; p.y += p.vy; p.a += p.da;
+      if (p.a < 0 || p.a > 1) p.da *= -1;
+      if (p.x < 0) p.x = 1; if (p.x > 1) p.x = 0;
+      if (p.y < 0) p.y = 1; if (p.y > 1) p.y = 0;
+      ctx.beginPath();
+      ctx.arc(p.x * canvas.width, p.y * canvas.height, p.r, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(139,92,246,${p.a * 0.6})`;
+      ctx.fill();
+    });
+    requestAnimationFrame(draw);
+  }
+  draw();
+}
+
+// ============================================================
+//  GLITCH on MAVLO title
+// ============================================================
+function initGlitch() {
+  const el = document.getElementById('heroName');
+  if (!el) return;
+  function glitch() {
+    el.classList.add('glitch');
+    setTimeout(() => el.classList.remove('glitch'), 350);
+    setTimeout(glitch, 5000 + Math.random() * 10000);
+  }
+  setTimeout(glitch, 3000 + Math.random() * 3000);
+}
+
+// ============================================================
+//  ROTATING TEXT
+// ============================================================
+function initRotatingText() {
+  const el = document.getElementById('heroRotate');
+  if (!el) return;
+  const words = ['Игры', 'Стримы', 'GTA RP', 'CS:GO', 'Хайлайты'];
+  let i = 0;
+  setInterval(() => {
+    el.classList.add('fade-out');
+    setTimeout(() => {
+      i = (i + 1) % words.length;
+      el.textContent = words[i];
+      el.classList.remove('fade-out');
+    }, 250);
+  }, 2500);
+}
+
+// ============================================================
+//  3D TILT on video cards (called after videos load)
+// ============================================================
+function initTilt() {
+  document.querySelectorAll('.video-card').forEach(card => {
+    card.addEventListener('mouseenter', () => { card.style.transition = 'none'; });
+    card.addEventListener('mousemove', e => {
+      const r = card.getBoundingClientRect();
+      const x = (e.clientX - r.left) / r.width  - 0.5;
+      const y = (e.clientY - r.top)  / r.height - 0.5;
+      card.style.transform = `perspective(700px) rotateY(${x*14}deg) rotateX(${-y*10}deg) scale3d(1.04,1.04,1.04)`;
+    });
+    card.addEventListener('mouseleave', () => {
+      card.style.transition = 'transform 0.6s ease';
+      card.style.transform  = '';
+      setTimeout(() => { card.style.transition = ''; }, 600);
+    });
+  });
+}
+
+// ============================================================
+//  KONAMI CODE EASTER EGG
+// ============================================================
+function initKonami() {
+  const SEQ = ['ArrowUp','ArrowUp','ArrowDown','ArrowDown','ArrowLeft','ArrowRight','ArrowLeft','ArrowRight','b','a'];
+  let idx = 0;
+  document.addEventListener('keydown', e => {
+    idx = (e.key === SEQ[idx]) ? idx + 1 : (e.key === SEQ[0] ? 1 : 0);
+    if (idx === SEQ.length) { idx = 0; triggerEasterEgg(); }
+  });
+}
+
+function triggerEasterEgg() {
+  confettiBurst();
+  const ov = document.getElementById('eggOverlay');
+  if (ov) ov.classList.add('show');
+}
+
+function confettiBurst() {
+  const colors = ['#8b5cf6','#c084fc','#f59e0b','#22c55e','#ef4444','#3b82f6','#fff','#ff6cbd'];
+  for (let i = 0; i < 140; i++) {
+    const el = document.createElement('div');
+    const size = Math.random() * 10 + 4;
+    el.style.cssText = `position:fixed;top:${-10 + Math.random()*30}%;left:${Math.random()*100}%;`
+      + `width:${size}px;height:${size}px;background:${colors[Math.floor(Math.random()*colors.length)]};`
+      + `border-radius:${Math.random()>.5?'50%':'2px'};z-index:10002;pointer-events:none;`
+      + `animation:confetti-fall ${1.5+Math.random()*2.5}s ease-in forwards;`
+      + `animation-delay:${Math.random()*0.6}s;`;
+    document.body.appendChild(el);
+    setTimeout(() => el.remove(), 4000);
+  }
+}
+
+// ============================================================
+//  AMBIENT MODE (Web Audio API — no files needed)
+// ============================================================
+function initAmbient() {
+  const btn = document.getElementById('ambientBtn');
+  if (!btn) return;
+  let audioCtx = null, nodes = [], playing = false;
+
+  btn.addEventListener('click', () => {
+    if (!playing) {
+      if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      audioCtx.resume();
+
+      const master = audioCtx.createGain();
+      master.gain.setValueAtTime(0, audioCtx.currentTime);
+      master.gain.linearRampToValueAtTime(0.35, audioCtx.currentTime + 2.5);
+      master.connect(audioCtx.destination);
+
+      // Filtered noise — atmospheric hum
+      const bufSize = audioCtx.sampleRate * 3;
+      const buf = audioCtx.createBuffer(1, bufSize, audioCtx.sampleRate);
+      const data = buf.getChannelData(0);
+      for (let i = 0; i < bufSize; i++) data[i] = Math.random() * 2 - 1;
+      const noise = audioCtx.createBufferSource();
+      noise.buffer = buf; noise.loop = true;
+      const nf = audioCtx.createBiquadFilter();
+      nf.type = 'lowpass'; nf.frequency.value = 160;
+      const ng = audioCtx.createGain(); ng.gain.value = 0.05;
+      noise.connect(nf); nf.connect(ng); ng.connect(master);
+      noise.start();
+
+      // Drone chord (A minor feel)
+      [110, 146.83, 164.81, 220].forEach((freq, i) => {
+        const osc = audioCtx.createOscillator();
+        osc.type = i % 2 === 0 ? 'sine' : 'triangle';
+        osc.frequency.value = freq;
+        const lfo = audioCtx.createOscillator();
+        lfo.frequency.value = 0.08 + i * 0.04;
+        const lfoG = audioCtx.createGain(); lfoG.gain.value = 0.5;
+        lfo.connect(lfoG); lfoG.connect(osc.frequency);
+        const g = audioCtx.createGain(); g.gain.value = 0.055 - i * 0.009;
+        osc.connect(g); g.connect(master);
+        osc.start(); lfo.start();
+        nodes.push(osc, lfo);
+      });
+
+      nodes.push(noise, master);
+      playing = true;
+      btn.classList.add('playing');
+      btn.innerHTML = '<i class="fas fa-volume-up"></i>';
+    } else {
+      const g = nodes.find(n => n.gain);
+      if (g) { g.gain.linearRampToValueAtTime(0, audioCtx.currentTime + 1); }
+      setTimeout(() => {
+        nodes.forEach(n => { try { n.stop ? n.stop() : n.disconnect(); } catch {} });
+        nodes = [];
+      }, 1100);
+      playing = false;
+      btn.classList.remove('playing');
+      btn.innerHTML = '<i class="fas fa-music"></i>';
+    }
+  });
+}
 
 // ============================================================
 //  TWITCH LIVE CHECK

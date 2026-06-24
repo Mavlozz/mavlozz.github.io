@@ -24,6 +24,9 @@
 </head>
 <body>
 
+  <!-- SCROLL PROGRESS BAR -->
+  <div class="scroll-progress" id="scrollProgress"></div>
+
   <!-- NAVBAR -->
   <nav class="navbar" id="navbar">
     <div class="container nav-container">
@@ -44,6 +47,7 @@
 
   <!-- HERO -->
   <section class="hero" id="home">
+    <canvas class="particles-canvas" id="particlesCanvas"></canvas>
     <div class="hero-grid"></div>
     <div class="hero-glow"></div>
     <div class="container">
@@ -56,8 +60,8 @@
           <div class="avatar-ring avatar-ring-2"></div>
         </div>
         <div class="hero-content">
-          <span class="hero-tag">// GAMING CHANNEL</span>
-          <h1 class="hero-name">MAVLO</h1>
+          <span class="hero-tag">// GAMING CHANNEL &nbsp;·&nbsp; <span class="hero-rotate" id="heroRotate">Игры</span></span>
+          <h1 class="hero-name" id="heroName">MAVLO</h1>
           <p class="hero-desc">
             Игры, стримы, разборы и настоящие эмоции.<br>
             Подписывайся — пропустишь самое интересное.
@@ -358,6 +362,21 @@
       </div>
     </div>
   </footer>
+
+  <!-- AMBIENT BUTTON -->
+  <button class="ambient-btn" id="ambientBtn" title="Атмосферный звук">
+    <i class="fas fa-music"></i>
+  </button>
+
+  <!-- KONAMI EASTER EGG -->
+  <div class="egg-overlay" id="eggOverlay">
+    <div class="egg-box">
+      <div class="egg-emoji">🎮</div>
+      <h2>ПАСХАЛКА НАЙДЕНА!</h2>
+      <p>Ты знаешь код Konami... Ты один из нас 🎯</p>
+      <button class="egg-close" onclick="document.getElementById('eggOverlay').classList.remove('show')">Закрыть</button>
+    </div>
+  </div>
 
   <script src="js/main.js"></script>
 </body>

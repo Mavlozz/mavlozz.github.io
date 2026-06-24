@@ -422,6 +422,22 @@ ul { list-style: none; }
   color: #fff;
   text-shadow: 0 0 40px var(--accent-glow);
   margin-bottom: 16px;
+  position: relative;
+}
+
+.hero-name.glitch {
+  animation: glitch-anim 0.35s linear;
+}
+
+@keyframes glitch-anim {
+  0%   { text-shadow: 0 0 40px var(--accent-glow); transform: none; }
+  15%  { text-shadow: -4px 0 #ff00ff, 4px 0 #00ffff; transform: skewX(-3deg) translateX(-2px); }
+  30%  { text-shadow: 4px 0 #ff00ff, -4px 0 #00ffff; transform: skewX(3deg) translateX(2px); clip-path: inset(30% 0 40% 0); }
+  45%  { text-shadow: -3px 0 #8b5cf6, 3px 0 #c084fc; transform: skewX(-1deg); clip-path: none; }
+  60%  { text-shadow: 2px 0 #ff00ff, -2px 0 #00ffff; transform: translateX(-1px); }
+  75%  { text-shadow: -2px 0 #ff00ff; transform: none; }
+  90%  { text-shadow: 0 0 40px var(--accent-glow); }
+  100% { text-shadow: 0 0 40px var(--accent-glow); transform: none; }
 }
 
 .hero-desc {
@@ -501,6 +517,164 @@ ul { list-style: none; }
   background: rgba(255,255,255,0.1);
   box-shadow: 0 0 14px color-mix(in srgb, var(--c) 40%, transparent);
   transform: translateY(-2px);
+}
+
+/* ============================================================
+   SCROLL PROGRESS BAR
+   ============================================================ */
+.scroll-progress {
+  position: fixed;
+  top: 0; left: 0;
+  height: 3px;
+  width: 0%;
+  background: linear-gradient(to right, #6d28d9, #8b5cf6, #c084fc);
+  z-index: 10000;
+  box-shadow: 0 0 10px rgba(139,92,246,0.8);
+  transition: width 0.08s linear;
+}
+
+/* ============================================================
+   PARTICLES CANVAS
+   ============================================================ */
+.particles-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ============================================================
+   ROTATING TEXT in hero-tag
+   ============================================================ */
+.hero-rotate {
+  display: inline-block;
+  color: #c084fc;
+  font-weight: 700;
+  transition: opacity 0.25s ease, transform 0.25s ease;
+}
+
+.hero-rotate.fade-out {
+  opacity: 0;
+  transform: translateY(-6px);
+}
+
+/* ============================================================
+   3D TILT VIDEO CARDS
+   ============================================================ */
+.video-card {
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+
+/* ============================================================
+   AMBIENT BUTTON
+   ============================================================ */
+.ambient-btn {
+  position: fixed;
+  bottom: 28px;
+  right: 28px;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: rgba(139,92,246,0.15);
+  border: 1px solid rgba(139,92,246,0.35);
+  color: #8b5cf6;
+  font-size: 17px;
+  cursor: pointer;
+  z-index: 999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.25s ease;
+  backdrop-filter: blur(10px);
+}
+
+.ambient-btn:hover {
+  background: rgba(139,92,246,0.3);
+  box-shadow: 0 0 20px rgba(139,92,246,0.5);
+  transform: scale(1.12);
+}
+
+.ambient-btn.playing {
+  color: #c084fc;
+  background: rgba(139,92,246,0.25);
+  animation: ambient-pulse 2s ease-in-out infinite;
+}
+
+@keyframes ambient-pulse {
+  0%, 100% { box-shadow: 0 0 8px rgba(139,92,246,0.4); }
+  50%       { box-shadow: 0 0 28px rgba(139,92,246,0.8); }
+}
+
+/* ============================================================
+   KONAMI EASTER EGG
+   ============================================================ */
+.egg-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.88);
+  z-index: 10001;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.4s ease;
+}
+
+.egg-overlay.show {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.egg-box {
+  text-align: center;
+  padding: 52px 64px;
+  background: rgba(15,8,35,0.96);
+  border: 1px solid rgba(139,92,246,0.4);
+  border-radius: 20px;
+  box-shadow: 0 0 80px rgba(139,92,246,0.25), 0 0 0 1px rgba(139,92,246,0.1);
+}
+
+.egg-emoji { font-size: 64px; margin-bottom: 20px; animation: egg-bounce 0.6s ease infinite alternate; }
+
+@keyframes egg-bounce {
+  from { transform: translateY(0); }
+  to   { transform: translateY(-10px); }
+}
+
+.egg-box h2 {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 26px;
+  color: #8b5cf6;
+  margin-bottom: 10px;
+  letter-spacing: 1px;
+}
+
+.egg-box p { color: #9999bb; margin-bottom: 28px; font-size: 16px; }
+
+.egg-close {
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  padding: 12px 36px;
+  border-radius: 8px;
+  font-family: 'Orbitron', sans-serif;
+  font-weight: 700;
+  font-size: 13px;
+  cursor: pointer;
+  letter-spacing: 1px;
+  transition: background 0.2s;
+}
+
+.egg-close:hover { background: #7c3aed; }
+
+/* confetti animation */
+@keyframes confetti-fall {
+  0%   { transform: rotate(0deg) translateY(0) scale(1); opacity: 1; }
+  100% { transform: rotate(720deg) translateY(105vh) scale(0.5); opacity: 0; }
 }
 
 /* Scroll hint */
